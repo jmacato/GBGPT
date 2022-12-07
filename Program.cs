@@ -2,42 +2,37 @@
 
 GameBoyCPU gameBoyCPU = new GameBoyCPU();
 
-
-byte[] program = {
-    0x21, 0x00, 0xC0, // LD HL, 0xC000 ; Load 0xC000 into HL
-    0x3E, 0x48,       // LD A, 0x48    ; Load 0x48 into A (ASCII 'H')
-    0x32, 0x00, 0xC0, // LD (HL), A    ; Store A into memory location 0xC000
-    0x3E, 0x65,       // LD A, 0x65    ; Load 0x65 into A (ASCII 'e')
-    0x32, 0x00, 0xC1, // LD (HL+1), A  ; Store A into memory location 0xC001
-    0x3E, 0x6C,       // LD A, 0x6C    ; Load 0x6C into A (ASCII 'l')
-    0x32, 0x00, 0xC2, // LD (HL+2), A  ; Store A into memory location 0xC002
-    0x3E, 0x6C,       // LD A, 0x6C    ; Load 0x6C into A (ASCII 'l')
-    0x32, 0x00, 0xC3, // LD (HL+3), A  ; Store A into memory location 0xC003
-    0x3E, 0x6F,       // LD A, 0x6F    ; Load 0x6F into A (ASCII 'o')
-    0x32, 0x00, 0xC4, // LD (HL+4), A  ; Store A into memory location 0xC004
-    0x20, 0x20,       // LD A, 0x20    ; Load 0x20 into A (ASCII ' ')
-    0x32, 0x00, 0xC5, // LD (HL+5), A  ; Store A into memory location 0xC005
-    0x3E, 0x57,       // LD A, 0x57    ; Load 0x57 into A (ASCII 'W')
-    0x32, 0x00, 0xC6, // LD (HL+6), A  ; Store A into memory location 0xC006
-    0x3E, 0x6F,       // LD A, 0x6F    ; Load 0x6F into A (ASCII 'o')
-    0x32, 0x00, 0xC7, // LD (HL+7), A  ; Store A into memory location 0xC007
-    0x3E, 0x72,       // LD A, 0x72    ; Load 0x72 into A (ASCII 'r')
-    0x32, 0x00, 0xC8, // LD (HL+8), A  ; Store A into memory location 0xC008
-    0x3E, 0x6C,       // LD A, 0x6C    ; Load 0x6C into A (ASCII 'l')
-    0x32, 0x00, 0xC9, // LD (HL+9), A  ; Store A into memory location 0xC009
-    0x3E, 0x64,       // LD A, 0x64    ; Load 0x64 into A (ASCII 'd')
-    0x32, 0x00, 0xCA, // LD (HL+10), A ; Store A into memory location 0xC00A
-    0x3E, 0x21,       // LD A, 0x21    ; Load 0x21 into A (ASCII '!')
-    0x32, 0x00, 0xCB, // LD (HL+11), A ; Store A into memory location 0xC00B
-    0xC3, 0x00, 0x00  // JP 0x0000     ; Jump to 0x0000 (loop forever)
+byte[] program =
+{
+    0xC3, 0x0F, 0x00, //Jump to 0x0F  
+    0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x20, 0x57, 0x6F, 0x72, 0x6C, 0x64, 0x21, //Write "Hello World!"
+    0x11, 0x00, 0xC0, //Load 0xC000 into DE
+    0x21, 0x03, 0x00, //Load 0x0003 into HL
+    0x06, 0x0C, //Load 12 into B
+    0x7E, //Load (HL) into A (Load 0x03 into A)
+    0x12, //Write the content of A into (DE)
+    0x23, //Increment HL (HL = 0x0004)
+    0x13, //Increment DE (DE = 0xC001)
+    0x05, //Decrement B (B = 11)
+    0xC2, 0x17, 0x00, //Jump back to 0x0017 if B is not 0
+    // Load zero to A
+    0x3E, 0x00,
+    0x11, 0x00, 0xC0, //Load 0xC000 into DE
+    0x06, 0x0C, //Load 12 into B
+    0x12, //Write the content of A into (DE)
+    0x13, //Increment DE  
+    0x05, //Decrement B 
+    0xC2, 0x26, 0x00, //Jump back to 0x27 if B is not 0
+    0xC3, 0x00, 0x00 // Jump to 0x0000
 };
+
 // Initial state of registers
 gameBoyCPU.SP = 0xCFEE;
 gameBoyCPU.A = 0;
 gameBoyCPU.H = 0;
 gameBoyCPU.L = 0;
 
-  
+
 Array.Copy(program, gameBoyCPU.Memory, program.Length);
 
 bool runningRealTimeClock = false;
@@ -45,28 +40,10 @@ bool runningPer100ms = false;
 
 while (true)
 {
+    Console.Clear();
     DrawScreen();
 
-    void DrawScreen()
-    {
-        Console.Clear();
-
-        var spacer1 = new string('-', Console.WindowWidth - 1);
-        var border = $"{spacer1}\r\n";
-
-
-        Console.WriteLine(border);
-        Console.WriteLine("Registers:");
-        Console.WriteLine(
-            $"A: {gameBoyCPU.A} B:{gameBoyCPU.B} C:{gameBoyCPU.C} D:{gameBoyCPU.D} E:{gameBoyCPU.E} H:{gameBoyCPU.H} L:{gameBoyCPU.L} SP:{gameBoyCPU.SP} PC:{gameBoyCPU.PC}");
-        Console.WriteLine(
-            $"Flags: Z:{gameBoyCPU.Zero} Carry:{gameBoyCPU.Carry} Sign:{gameBoyCPU.Sign} Parity:{gameBoyCPU.Parity} HalfCarry:{gameBoyCPU.HalfCarry}");
-        Console.WriteLine($"Memory at 0xC000: {Encoding.ASCII.GetString(gameBoyCPU.Memory[0xC000..(0xC000 + 30)])}");
-        Console.WriteLine("X - Run realtime clock, Y - Run per 100ms, Space - Pause execution");
-
-        Console.WriteLine(border);
-    }
-
+    Console.WriteLine("Press any key to continue.");
     ConsoleKeyInfo c = Console.ReadKey();
 
     if (c.KeyChar == 'y')
@@ -74,15 +51,33 @@ while (true)
         runningPer100ms = true;
     }
 
-    Console.Clear();
-    DrawScreen();
-
+    
     while (!gameBoyCPU.StopCPU)
     {
-        gameBoyCPU.DecodeAndExecuteInstruction(gameBoyCPU.Memory[gameBoyCPU.PC]);
-
-        if (Console.KeyAvailable) return;
+        Console.Clear();
         DrawScreen();
-        if (runningPer100ms) Thread.Sleep(100);
+        gameBoyCPU.DecodeAndExecuteInstruction(gameBoyCPU.Memory[gameBoyCPU.PC]);
+        Thread.Sleep(50);
     }
+}
+
+void DrawScreen()
+{
+   
+    Console.Clear();
+    Console.WriteLine("CPU Registers/Flags View");
+    Console.WriteLine("----------------------------------------");
+    Console.WriteLine($"A  = 0x{gameBoyCPU.A:X2}     B  = 0x{gameBoyCPU.B:X2}  C  = 0x{gameBoyCPU.C:X2}  D  = 0x{gameBoyCPU.D:X2}");
+    Console.WriteLine($"E  = 0x{gameBoyCPU.E:X2}     H  = 0x{gameBoyCPU.H:X2}  L  = 0x{gameBoyCPU.L:X2}  PC = 0x{gameBoyCPU.PC:X4}");
+    Console.WriteLine($"SP = 0x{gameBoyCPU.SP:X4}   OP = 0x{gameBoyCPU.Memory[gameBoyCPU.PC]:X2}");
+    Console.WriteLine("----------------------------------------");
+    Console.Write($"Z  = {(gameBoyCPU.Zero ? 1 : 0)}");
+    Console.Write($"   S = {(gameBoyCPU.Sign ? 1 : 0)}");
+    Console.Write($"   P = {(gameBoyCPU.Parity ? 1 : 0)}");
+    Console.Write($"   H = {(gameBoyCPU.HalfCarry ? 1 : 0)}");
+    Console.Write($"   C = {(gameBoyCPU.Carry ? 1 : 0)} ");
+    Console.WriteLine("\n----------------------------------------");
+    Console.WriteLine($"StopCPU: {(gameBoyCPU.StopCPU ? "Yes" : "No")}");
+    Console.WriteLine($"Memory at 0xC000: {string.Join("", gameBoyCPU.Memory[0xC000..(0xC000 + 19)].Select(x => x == 0 ? ' ' : (char)x))}");
+
 }

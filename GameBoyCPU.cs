@@ -1089,7 +1089,7 @@ public class GameBoyCPU
         Zero = B == 0;
         HalfCarry = (B & 0x0F) == 0x0F;
         Parity = (B & 0x01) == 1;
-        PC++;
+        PC++; 
     }
 
     // 0x06 - LD B, n - Load 8-bit immediate value into B.
@@ -1239,9 +1239,8 @@ public class GameBoyCPU
     // 0x11 - LD DE, nn - Load DE with 16-bit immediate value.
     private void ExecuteLdDEnn()
     {
-        ushort de = (ushort)((Memory[PC + 1] << 8) | Memory[PC + 2]);
-        D = (byte)((de >> 8) & 0xFF);
-        E = (byte)(de & 0xFF);
+        D = Memory[PC + 2];
+        E = Memory[PC + 1];
         Sign = false;
         Zero = false;
         HalfCarry = false;
@@ -1443,9 +1442,8 @@ public class GameBoyCPU
     // 0x21 - LD HL, nn - Load HL with 16-bit immediate value.
     private void ExecuteLdHLnn()
     {
-        ushort hl = (ushort)((Memory[PC + 1] << 8) | Memory[PC + 2]);
-        H = (byte)((hl >> 8) & 0xFF);
-        L = (byte)(hl & 0xFF);
+        H = Memory[PC + 2];
+        L = Memory[PC + 1];
         Sign = false;
         Zero = false;
         HalfCarry = false;
@@ -1456,9 +1454,10 @@ public class GameBoyCPU
 
     // 0x22 - LD (HL+), A - Load A to address pointed by HL, then increment HL.
     private void ExecuteLdHLiA()
+    
     {
-        Memory[(H << 8) | L] = A;
         ushort hl = (ushort)((H << 8) | L);
+        Memory[hl] = A;
         hl++;
         H = (byte)((hl >> 8) & 0xFF);
         L = (byte)(hl & 0xFF);
@@ -3344,7 +3343,7 @@ public class GameBoyCPU
     {
         if (!Zero)
         {
-            PC = (ushort)(Memory[PC + 1] << 8 | Memory[PC + 2]);
+            PC = (ushort)(Memory[PC + 2] << 8 | Memory[PC + 1]);
         }
         else
         {
@@ -3355,7 +3354,7 @@ public class GameBoyCPU
     // 0xC3 - JP nn - Jump to address nn.
     private void ExecuteJpnn()
     {
-        PC = (ushort)(Memory[PC + 1] << 8 | Memory[PC + 2]);
+        PC = (ushort)(Memory[PC + 2] << 8 | Memory[PC + 1]);
     }
 
 
