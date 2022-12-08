@@ -1,21 +1,20 @@
-public class GameBoyCPU
+// ReSharper disable CommentTypo
+
+namespace GBGPT;
+
+public class GameBoyCpu
 {
     public byte A, B, C, D, E, H, L;
-    public ushort PC, SP;
+    public ushort ProgramCounter, StackPointer;
     public bool Zero, Carry, Sign, Parity, HalfCarry;
-    public byte[] Memory = new byte[0x10000];
-    public bool StopCPU;
-
-    private static bool GetBit(byte value, int position)
-    {
-        return (value & (1 << position)) != 0;
-    }
+    public readonly byte[] Memory = new byte[0x10000];
+    public bool Halt;
 
     private static bool IsParity(byte value)
     {
-        int size = sizeof(byte) * 8;
+        var size = sizeof(byte) * 8;
         int i;
-        int p = 0;
+        var p = 0;
         for (i = 0; i < size; i++)
         {
             if ((value & (1 << i)) != 0)
@@ -31,7 +30,7 @@ public class GameBoyCPU
         switch (opcode)
         {
             case 0x00: //NOP
-                ExecuteNOP();
+                ExecuteNop();
                 break;
 
             case 0x01: //LD BC, nn
@@ -39,11 +38,11 @@ public class GameBoyCPU
                 break;
 
             case 0x02: //LD (BC), A
-                ExecuteLdBCA();
+                ExecuteLdBca();
                 break;
 
             case 0x03: //INC BC
-                ExecuteIncBC();
+                ExecuteIncBc();
                 break;
 
             case 0x04: //INC B
@@ -63,19 +62,19 @@ public class GameBoyCPU
                 break;
 
             case 0x08: //LD (nn), SP
-                ExecuteLdnnSP();
+                ExecuteLdnnSp();
                 break;
 
             case 0x09: //ADD HL, BC
-                ExecuteAddHLBC();
+                ExecuteAddHlbc();
                 break;
 
             case 0x0A: //LD A, (BC)
-                ExecuteLdABC();
+                ExecuteLdAbc();
                 break;
 
             case 0x0B: //DEC BC
-                ExecuteDecBC();
+                ExecuteDecBc();
                 break;
 
             case 0x0C: //INC C
@@ -103,11 +102,11 @@ public class GameBoyCPU
                 break;
 
             case 0x12: //LD (DE), A
-                ExecuteLdDEA();
+                ExecuteLdDea();
                 break;
 
             case 0x13: //INC DE
-                ExecuteIncDE();
+                ExecuteIncDe();
                 break;
 
             case 0x14: //INC D
@@ -131,15 +130,15 @@ public class GameBoyCPU
                 break;
 
             case 0x19: //ADD HL, DE
-                ExecuteAddHLDE();
+                ExecuteAddHlde();
                 break;
 
             case 0x1A: //LD A, (DE)
-                ExecuteLdADE();
+                ExecuteLdAde();
                 break;
 
             case 0x1B: //DEC DE
-                ExecuteDecDE();
+                ExecuteDecDe();
                 break;
 
             case 0x1C: //INC E
@@ -171,7 +170,7 @@ public class GameBoyCPU
                 break;
 
             case 0x23: //INC HL
-                ExecuteIncHL();
+                ExecuteIncHl();
                 break;
 
             case 0x24: //INC H
@@ -195,15 +194,15 @@ public class GameBoyCPU
                 break;
 
             case 0x29: //ADD HL, HL
-                ExecuteAddHLHL();
+                ExecuteAddHlhl();
                 break;
 
             case 0x2A: //LD A, (HL+)
-                ExecuteLdAHLPlus();
+                ExecuteLdAhlPlus();
                 break;
 
             case 0x2B: //DEC HL
-                ExecuteDecHL();
+                ExecuteDecHl();
                 break;
 
             case 0x2C: //INC L
@@ -255,15 +254,15 @@ public class GameBoyCPU
                 break;
 
             case 0x38: //JR C, n
-                ExecuteJrCE();
+                ExecuteJrCe();
                 break;
 
             case 0x39: //ADD HL, SP
-                ExecuteAddHLSP();
+                ExecuteAddHlsp();
                 break;
 
             case 0x3A: //LD A, (HL-)
-                ExecuteLdAHLMinus();
+                ExecuteLdAhlMinus();
                 break;
 
             case 0x3B: //DEC SP
@@ -291,159 +290,159 @@ public class GameBoyCPU
                 break;
 
             case 0x41: //LD B, C
-                ExecuteLdBC();
+                ExecuteLdBc();
                 break;
 
             case 0x42: //LD B, D
-                ExecuteLdBD();
+                ExecuteLdBd();
                 break;
 
             case 0x43: //LD B, E
-                ExecuteLdBE();
+                ExecuteLdBe();
                 break;
 
             case 0x44: //LD B, H
-                ExecuteLdBH();
+                ExecuteLdBh();
                 break;
 
             case 0x45: //LD B, L
-                ExecuteLdBL();
+                ExecuteLdBl();
                 break;
 
             case 0x46: //LD B, (HL)
-                ExecuteLdBHL();
+                ExecuteLdBhl();
                 break;
 
             case 0x47: //LD B, A
-                ExecuteLdBA();
+                ExecuteLdBa();
                 break;
 
             case 0x48: //LD C, B
-                ExecuteLdCB();
+                ExecuteLdCb();
                 break;
 
             case 0x49: //LD C, C
-                ExecuteLdCC();
+                ExecuteLdCc();
                 break;
 
             case 0x4A: //LD C, D
-                ExecuteLdCD();
+                ExecuteLdCd();
                 break;
 
             case 0x4B: //LD C, E
-                ExecuteLdCE();
+                ExecuteLdCe();
                 break;
 
             case 0x4C: //LD C, H
-                ExecuteLdCH();
+                ExecuteLdCh();
                 break;
 
             case 0x4D: //LD C, L
-                ExecuteLdCL();
+                ExecuteLdCl();
                 break;
 
             case 0x4E: //LD C, (HL)
-                ExecuteLdCHL();
+                ExecuteLdChl();
                 break;
 
             case 0x4F: //LD C, A
-                ExecuteLdCA();
+                ExecuteLdCa();
                 break;
 
             case 0x50: //LD D, B
-                ExecuteLdDB();
+                ExecuteLdDb();
                 break;
 
             case 0x51: //LD D, C
-                ExecuteLdDC();
+                ExecuteLdDc();
                 break;
 
             case 0x52: //LD D, D
-                ExecuteLdDD();
+                ExecuteLdDd();
                 break;
 
             case 0x53: //LD D, E
-                ExecuteLdDE();
+                ExecuteLdDe();
                 break;
 
             case 0x54: //LD D, H
-                ExecuteLdDH();
+                ExecuteLdDh();
                 break;
 
             case 0x55: //LD D, L
-                ExecuteLdDL();
+                ExecuteLdDl();
                 break;
 
             case 0x56: //LD D, (HL)
-                ExecuteLdDHL();
+                ExecuteLdDhl();
                 break;
 
             case 0x57: //LD D, A
-                ExecuteLdDA();
+                ExecuteLdDa();
                 break;
 
             case 0x58: //LD E, B
-                ExecuteLdEB();
+                ExecuteLdEb();
                 break;
 
             case 0x59: //LD E, C
-                ExecuteLdEC();
+                ExecuteLdEc();
                 break;
 
             case 0x5A: //LD E, D
-                ExecuteLdED();
+                ExecuteLdEd();
                 break;
 
             case 0x5B: //LD E, E
-                ExecuteLdEE();
+                ExecuteLdEe();
                 break;
 
             case 0x5C: //LD E, H
-                ExecuteLdEH();
+                ExecuteLdEh();
                 break;
 
             case 0x5D: //LD E, L
-                ExecuteLdEL();
+                ExecuteLdEl();
                 break;
 
             case 0x5E: //LD E, (HL)
-                ExecuteLdEHL();
+                ExecuteLdEhl();
                 break;
 
             case 0x5F: //LD E, A
-                ExecuteLdEA();
+                ExecuteLdEa();
                 break;
 
             case 0x60: //LD H, B
-                ExecuteLdHB();
+                ExecuteLdHb();
                 break;
 
             case 0x61: //LD H, C
-                ExecuteLdHC();
+                ExecuteLdHc();
                 break;
 
             case 0x62: //LD H, D
-                ExecuteLdHD();
+                ExecuteLdHd();
                 break;
 
             case 0x63: //LD H, E
-                ExecuteLdHE();
+                ExecuteLdHe();
                 break;
 
             case 0x64: //LD H, H
-                ExecuteLdHH();
+                ExecuteLdHh();
                 break;
 
             case 0x65: //LD H, L
-                ExecuteLdHL();
+                ExecuteLdHl();
                 break;
 
             case 0x66: //LD H, (HL)
-                ExecuteLdHHL();
+                ExecuteLdHhl();
                 break;
 
             case 0x67: //LD H, A
-                ExecuteLdHA();
+                ExecuteLdHa();
                 break;
 
             case 0x68: //LD L, B
@@ -451,55 +450,55 @@ public class GameBoyCPU
                 break;
 
             case 0x69: //LD L, C
-                ExecuteLdLC();
+                ExecuteLdLc();
                 break;
 
             case 0x6A: //LD L, D
-                ExecuteLdLD();
+                ExecuteLdLd();
                 break;
 
             case 0x6B: //LD L, E
-                ExecuteLdLE();
+                ExecuteLdLe();
                 break;
 
             case 0x6C: //LD L, H
-                ExecuteLdLH();
+                ExecuteLdLh();
                 break;
 
             case 0x6D: //LD L, L
-                ExecuteLdLL();
+                ExecuteLdLl();
                 break;
 
             case 0x6E: //LD L, (HL)
-                ExecuteLdLHL();
+                ExecuteLdLhl();
                 break;
 
             case 0x6F: //LD L, A
-                ExecuteLdLA();
+                ExecuteLdLa();
                 break;
 
             case 0x70: //LD (HL), B
-                ExecuteLdHLB();
+                ExecuteLdHlb();
                 break;
 
             case 0x71: //LD (HL), C
-                ExecuteLdHLC();
+                ExecuteLdHlc();
                 break;
 
             case 0x72: //LD (HL), D
-                ExecuteLdHLD();
+                ExecuteLdHld();
                 break;
 
             case 0x73: //LD (HL), E
-                ExecuteLdHLE();
+                ExecuteLdHle();
                 break;
 
             case 0x74: //LD (HL), H
-                ExecuteLdHLH();
+                ExecuteLdHlh();
                 break;
 
             case 0x75: //LD (HL), L
-                ExecuteLdHLL();
+                ExecuteLdHll();
                 break;
 
             case 0x76: //HALT
@@ -507,104 +506,104 @@ public class GameBoyCPU
                 break;
 
             case 0x77: //LD (HL), A
-                ExecuteLdHLA();
+                ExecuteLdHla();
                 break;
 
             case 0x78: //LD A, B
-                ExecuteLdAB();
+                ExecuteLdAb();
                 break;
 
             case 0x79: //LD A, C
-                ExecuteLdAC();
+                ExecuteLdAc();
                 break;
 
             case 0x7A: //LD A, D
-                ExecuteLdAD();
+                ExecuteLdAd();
                 break;
 
             case 0x7B: //LD A, E
-                ExecuteLdAE();
+                ExecuteLdAe();
                 break;
 
             case 0x7C: //LD A, H
-                ExecuteLdAH();
+                ExecuteLdAh();
                 break;
 
 
             case 0x7D: //LD A, L
-                ExecuteLdAL();
+                ExecuteLdAl();
                 break;
 
             case 0x7E: //LD A, (HL)
-                ExecuteLdAHL();
+                ExecuteLdAhl();
                 break;
 
             case 0x7F: //LD A, A
-                ExecuteLdAA();
+                ExecuteLdAa();
                 break;
 
             case 0x80: //ADD A, B
-                ExecuteAddAB();
+                ExecuteAddAb();
                 break;
 
             case 0x81: //ADD A, C
-                ExecuteAddAC();
+                ExecuteAddAc();
                 break;
 
             case 0x82: //ADD A, D
-                ExecuteAddAD();
+                ExecuteAddAd();
                 break;
 
             case 0x83: //ADD A, E
-                ExecuteAddAE();
+                ExecuteAddAe();
                 break;
 
             case 0x84: //ADD A, H
-                ExecuteAddAH();
+                ExecuteAddAh();
                 break;
 
             case 0x85: //ADD A, L
-                ExecuteAddAL();
+                ExecuteAddAl();
                 break;
 
             case 0x86: //ADD A, (HL)
-                ExecuteAddAHL();
+                ExecuteAddAhl();
                 break;
 
             case 0x87: //ADD A, A
-                ExecuteAddAA();
+                ExecuteAddAa();
                 break;
 
             case 0x88: //ADC A, B
-                ExecuteAdcAB();
+                ExecuteAdcAb();
                 break;
 
             case 0x89: //ADC A, C
-                ExecuteAdcAC();
+                ExecuteAdcAc();
                 break;
 
             case 0x8A: //ADC A, D
-                ExecuteAdcAD();
+                ExecuteAdcAd();
                 break;
 
             case 0x8B: //ADC A, E
-                ExecuteAdcAE();
+                ExecuteAdcAe();
                 break;
 
             case 0x8C: //ADC A, H
-                ExecuteAdcAH();
+                ExecuteAdcAh();
                 break;
 
             case 0x8D: //ADC A, L
-                ExecuteAdcAL();
+                ExecuteAdcAl();
                 break;
 
             case 0x8E: //ADC A, (HL)
-                ExecuteAdcAHL();
+                ExecuteAdcAhl();
                 break;
 
             case 0x8F: //ADC A, A
-                ExecuteAdcAA();
+                ExecuteAdcAa();
                 break;
 
             case 0x90: //SUB A, B
@@ -632,7 +631,7 @@ public class GameBoyCPU
                 break;
 
             case 0x96: //SUB A, (HL)
-                ExecuteSubHL();
+                ExecuteSubHl();
                 break;
 
             case 0x97: //SUB A, A
@@ -640,35 +639,35 @@ public class GameBoyCPU
                 break;
 
             case 0x98: //SBC A, B
-                ExecuteSbcAB();
+                ExecuteSbcAb();
                 break;
 
             case 0x99: //SBC A, C
-                ExecuteSbcAC();
+                ExecuteSbcAc();
                 break;
 
             case 0x9A: //SBC A, D
-                ExecuteSbcAD();
+                ExecuteSbcAd();
                 break;
 
             case 0x9B: //SBC A, E
-                ExecuteSbcAE();
+                ExecuteSbcAe();
                 break;
 
             case 0x9C: //SBC A, H
-                ExecuteSbcAH();
+                ExecuteSbcAh();
                 break;
 
             case 0x9D: //SBC A, L
-                ExecuteSbcAL();
+                ExecuteSbcAl();
                 break;
 
             case 0x9E: //SBC A, (HL)
-                ExecuteSubAHL();
+                ExecuteSubAhl();
                 break;
 
             case 0x9F: //SBC A, A
-                ExecuteSbcAA();
+                ExecuteSbcAa();
                 break;
 
             case 0xA0: //AND A, B
@@ -696,7 +695,7 @@ public class GameBoyCPU
                 break;
 
             case 0xA6: //AND A, (HL)
-                ExecuteAndHL();
+                ExecuteAndHl();
                 break;
 
             case 0xA7: //AND A, A
@@ -728,7 +727,7 @@ public class GameBoyCPU
                 break;
 
             case 0xAE: //XOR A, (HL)
-                ExecuteXorHL();
+                ExecuteXorHl();
                 break;
 
             case 0xAF: //XOR A, A
@@ -760,7 +759,7 @@ public class GameBoyCPU
                 break;
 
             case 0xB6: //OR A, (HL)
-                ExecuteOrHL();
+                ExecuteOrHl();
                 break;
 
             case 0xB7: //OR A, A
@@ -792,7 +791,7 @@ public class GameBoyCPU
                 break;
 
             case 0xBE: //CP A, (HL)
-                ExecuteCpHL();
+                ExecuteCpHl();
                 break;
 
             case 0xBF: //CP A, A
@@ -800,11 +799,11 @@ public class GameBoyCPU
                 break;
 
             case 0xC0: //RET NZ
-                ExecuteRetNZ();
+                ExecuteRetNz();
                 break;
 
             case 0xC1: //POP BC
-                ExecutePopBC();
+                ExecutePopBc();
                 break;
 
             case 0xC2: //JP NZ, nn
@@ -820,7 +819,7 @@ public class GameBoyCPU
                 break;
 
             case 0xC5: //PUSH BC
-                ExecutePushBC();
+                ExecutePushBc();
                 break;
 
             case 0xC6: //ADD A, n
@@ -844,7 +843,7 @@ public class GameBoyCPU
                 break;
 
             case 0xCB: //CB Prefix
-                ExecutePrefixCB();
+                ExecutePrefixCb();
                 break;
 
             case 0xCC: //CALL Z, nn
@@ -864,11 +863,11 @@ public class GameBoyCPU
                 break;
 
             case 0xD0: //RET NC
-                ExecuteRetNC();
+                ExecuteRetNc();
                 break;
 
             case 0xD1: //POP DE
-                ExecutePopDE();
+                ExecutePopDe();
                 break;
 
             case 0xD2: //JP NC, nn
@@ -884,7 +883,7 @@ public class GameBoyCPU
                 break;
 
             case 0xD5: //PUSH DE
-                ExecutePushDE();
+                ExecutePushDe();
                 break;
 
             case 0xD6: //SUB n
@@ -907,16 +906,12 @@ public class GameBoyCPU
                 ExecuteJpCnn();
                 break;
 
-            case 0xDB: //XX
-                ExecuteNOP();
-                break;
-
             case 0xDC: //CALL C, nn
                 ExecuteCallCnn();
                 break;
 
             case 0xDD: //XX
-                ExecuteNOP();
+                ExecuteNop();
                 break;
 
             case 0xDE: //SBC A, n
@@ -932,23 +927,23 @@ public class GameBoyCPU
                 break;
 
             case 0xE1: //POP HL
-                ExecutePopHL();
+                ExecutePopHl();
                 break;
 
             case 0xE2: //LD (C), A
-                ExecuteLdCA();
+                ExecuteLdCa();
                 break;
 
             case 0xE3: //XX
-                ExecuteNOP();
+                ExecuteNop();
                 break;
 
             case 0xE4: //XX
-                ExecuteNOP();
+                ExecuteNop();
                 break;
 
             case 0xE5: //PUSH HL
-                ExecutePushHL();
+                ExecutePushHl();
                 break;
 
             case 0xE6: //AND n
@@ -963,7 +958,7 @@ public class GameBoyCPU
                 break;
 
             case 0xE9: //JP (HL)
-                ExecuteJpHL();
+                ExecuteJpHl();
                 break;
 
             case 0xEA: //LD (nn), A
@@ -971,15 +966,15 @@ public class GameBoyCPU
                 break;
 
             case 0xEB: // XX
-                ExecuteNOP();
+                ExecuteNop();
                 break;
 
             case 0xEC: // XX
-                ExecuteNOP();
+                ExecuteNop();
                 break;
 
             case 0xED: // XX
-                ExecuteNOP();
+                ExecuteNop();
                 break;
 
             case 0xEE: //XOR A, n
@@ -995,23 +990,23 @@ public class GameBoyCPU
                 break;
 
             case 0xF1: //POP AF
-                ExecutePopAF();
+                ExecutePopAf();
                 break;
 
             case 0xF2: //LD A, (C)
-                ExecuteLdAC();
+                ExecuteLdAc();
                 break;
 
             case 0xF3: //DI
-                ExecuteDI();
+                ExecuteDi();
                 break;
 
             case 0xF4: // XX
-                ExecuteNOP();
+                ExecuteNop();
                 break;
 
             case 0xF5: //PUSH BC
-                ExecutePushAF();
+                ExecutePushAf();
                 break;
 
             case 0xF6: //OR A, n
@@ -1023,11 +1018,11 @@ public class GameBoyCPU
                 break;
 
             case 0xF8: //LD HL, SP+r8
-                ExecuteLdHLSPn();
+                ExecuteLdHlsPn();
                 break;
 
             case 0xF9: //LD SP, HL
-                ExecuteLdSPHL();
+                ExecuteLdSphl();
                 break;
 
             case 0xFA: //LD A, (nn)
@@ -1035,15 +1030,15 @@ public class GameBoyCPU
                 break;
 
             case 0xFB: //EI
-                ExecuteEI();
+                ExecuteEi();
                 break;
 
             case 0xFC: // XX
-                ExecuteNOP();
+                ExecuteNop();
                 break;
 
             case 0xFD: // XX
-                ExecuteNOP();
+                ExecuteNop();
                 break;
 
             case 0xFE: //CP n
@@ -1058,35 +1053,35 @@ public class GameBoyCPU
 
 
     // 0x00 - NOP - No Operation.
-    private void ExecuteNOP()
+    private void ExecuteNop()
     {
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x01 - LD BC, nn - Load 16-bit immediate value into BC.
     private void ExecuteLdBCnn()
     {
-        C = Memory[PC + 1];
-        B = Memory[PC + 2];
-        PC += 3;
+        C = Memory[ProgramCounter + 1];
+        B = Memory[ProgramCounter + 2];
+        ProgramCounter += 3;
     }
 
     // 0x02 - LD (BC), A - Store A register into address pointed by BC.
-    private void ExecuteLdBCA()
+    private void ExecuteLdBca()
     {
-        ushort x = (ushort)((B << 8) | C);
+        var x = (ushort)((B << 8) | C);
         Memory[x] = A;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x03 - INC BC - Increment BC.
-    private void ExecuteIncBC()
+    private void ExecuteIncBc()
     {
-        ushort bc = (ushort)((B << 8) | C);
+        var bc = (ushort)((B << 8) | C);
         bc++;
         B = (byte)((bc >> 8) & 0xFF);
         C = (byte)(bc & 0xFF);
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x04 - INC B - Increment B register.
@@ -1097,7 +1092,7 @@ public class GameBoyCPU
         Zero = B == 0;
         HalfCarry = (B & 0x0F) == 0;
         Parity = (B & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x05 - DEC B - Decrement B register.
@@ -1108,43 +1103,43 @@ public class GameBoyCPU
         Zero = B == 0;
         HalfCarry = (B & 0x0F) == 0x0F;
         Parity = (B & 0x01) == 1;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x06 - LD B, n - Load 8-bit immediate value into B.
     private void ExecuteLdBn()
     {
-        B = Memory[PC + 1];
-        PC += 2;
+        B = Memory[ProgramCounter + 1];
+        ProgramCounter += 2;
     }
 
     // 0x07 - RLCA - Rotate A register left with carry.
     private void ExecuteRlca()
     {
-        byte carryOut = (byte)(A >> 7);
+        var carryOut = (byte)(A >> 7);
         A = (byte)((A << 1) | carryOut);
         Sign = false;
         Zero = false;
         HalfCarry = false;
         Carry = carryOut == 0x01;
         Parity = false;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x08 - LD (nn), SP - Store stack pointer at address pointed by 16-bit immediate value.
-    private void ExecuteLdnnSP()
+    private void ExecuteLdnnSp()
     {
-        ushort address = (ushort)((Memory[PC + 2] << 8) | Memory[PC + 1]);
-        Memory[address] = (byte)(SP & 0xFF);
-        Memory[address + 1] = (byte)((SP >> 8) & 0xFF);
-        PC += 3;
+        var address = (ushort)((Memory[ProgramCounter + 2] << 8) | Memory[ProgramCounter + 1]);
+        Memory[address] = (byte)(StackPointer & 0xFF);
+        Memory[address + 1] = (byte)((StackPointer >> 8) & 0xFF);
+        ProgramCounter += 3;
     }
 
     // 0x09 - ADD HL, BC - Add BC to HL.
-    private void ExecuteAddHLBC()
+    private void ExecuteAddHlbc()
     {
-        ushort result = (ushort)((H << 8) | L);
-        ushort bc = (ushort)((B << 8) | C);
+        var result = (ushort)((H << 8) | L);
+        var bc = (ushort)((B << 8) | C);
         result += bc;
         H = (byte)((result >> 8) & 0xFF);
         L = (byte)(result & 0xFF);
@@ -1153,7 +1148,7 @@ public class GameBoyCPU
         HalfCarry = (result & 0xFFF) < (bc & 0xFFF);
         Carry = result < bc;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
 
@@ -1165,26 +1160,26 @@ public class GameBoyCPU
         Zero = C == 0;
         HalfCarry = (C & 0x0F) == 0;
         Parity = (C & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
 
     // 0x0F - RRCA - Rotate A register right with carry.
     private void ExecuteRrca()
     {
-        byte carryOut = (byte)(A & 0x01);
+        var carryOut = (byte)(A & 0x01);
         A = (byte)((A >> 1) | (carryOut << 7));
         Sign = false;
         Zero = false;
         HalfCarry = false;
         Carry = carryOut == 0x01;
         Parity = false;
-        PC++;
+        ProgramCounter++;
     }
 
 
     // 0x0A - LD A, (BC) - Load A with value pointed by BC.
-    private void ExecuteLdABC()
+    private void ExecuteLdAbc()
     {
         A = Memory[(B << 8) | C];
         Sign = false;
@@ -1192,13 +1187,13 @@ public class GameBoyCPU
         HalfCarry = false;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x0B - DEC BC - Decrement BC.
-    private void ExecuteDecBC()
+    private void ExecuteDecBc()
     {
-        ushort bc = (ushort)((B << 8) | C);
+        var bc = (ushort)((B << 8) | C);
         bc--;
         B = (byte)((bc >> 8) & 0xFF);
         C = (byte)(bc & 0xFF);
@@ -1207,7 +1202,7 @@ public class GameBoyCPU
         HalfCarry = false;
         Carry = false;
         Parity = (B & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
 
@@ -1220,56 +1215,43 @@ public class GameBoyCPU
         HalfCarry = (C & 0xF) == 0;
         Carry = false;
         Parity = (C & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x0E - LD C, n - Load C with 8-bit immediate value.
     private void ExecuteLdCn()
     {
-        C = Memory[PC + 1];
+        C = Memory[ProgramCounter + 1];
         Sign = (C >> 7) == 1;
         Zero = C == 0;
         HalfCarry = false;
         Carry = false;
         Parity = (C & 0x01) == 0;
-        PC += 2;
-    }
-
-    // 0x0F - RRCA - Rotate A right through carry.
-    private void ExecuteRRCA()
-    {
-        byte carry = (byte)(A >> 7);
-        A = (byte)((A << 1) | carry);
-        Sign = false;
-        Zero = false;
-        HalfCarry = false;
-        Carry = (carry == 1);
-        Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter += 2;
     }
 
     // 0x10 - STOP 0 - Stop CPU until button pressed.
     private void ExecuteStop()
     {
         // Stop CPU until button pressed.
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x11 - LD DE, nn - Load DE with 16-bit immediate value.
     private void ExecuteLdDEnn()
     {
-        D = Memory[PC + 2];
-        E = Memory[PC + 1];
+        D = Memory[ProgramCounter + 2];
+        E = Memory[ProgramCounter + 1];
         Sign = false;
         Zero = false;
         HalfCarry = false;
         Carry = false;
         Parity = (D & 0x01) == 0;
-        PC += 3;
+        ProgramCounter += 3;
     }
 
     // 0x12 - LD (DE), A - Load A to address pointed by DE.
-    private void ExecuteLdDEA()
+    private void ExecuteLdDea()
     {
         Memory[(D << 8) | E] = A;
         Sign = false;
@@ -1277,13 +1259,13 @@ public class GameBoyCPU
         HalfCarry = false;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x13 - INC DE - Increment DE.
-    private void ExecuteIncDE()
+    private void ExecuteIncDe()
     {
-        ushort de = (ushort)((D << 8) | E);
+        var de = (ushort)((D << 8) | E);
         de++;
         D = (byte)((de >> 8) & 0xFF);
         E = (byte)(de & 0xFF);
@@ -1292,7 +1274,7 @@ public class GameBoyCPU
         HalfCarry = false;
         Carry = false;
         Parity = (D & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x14 - INC D - Increment D.
@@ -1304,7 +1286,7 @@ public class GameBoyCPU
         HalfCarry = (D & 0xF) == 0;
         Carry = false;
         Parity = (D & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x15 - DEC D - Decrement D.
@@ -1316,46 +1298,46 @@ public class GameBoyCPU
         HalfCarry = (D & 0xF) == 0;
         Carry = false;
         Parity = (D & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x16 - LD D, n - Load D with 8-bit immediate value.
     private void ExecuteLdDn()
     {
-        D = Memory[PC + 1];
+        D = Memory[ProgramCounter + 1];
         Sign = (D >> 7) == 1;
         Zero = D == 0;
         HalfCarry = false;
         Carry = false;
         Parity = (D & 0x01) == 0;
-        PC += 2;
+        ProgramCounter += 2;
     }
 
     // 0x17 - RLA - Rotate A left through carry.
     private void ExecuteRla()
     {
-        byte carry = (byte)(A >> 7);
+        var carry = (byte)(A >> 7);
         A = (byte)((A << 1) | (Carry ? 1 : 0));
         Sign = false;
         Zero = false;
         HalfCarry = false;
         Carry = (carry == 1);
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x18 - JR n - Relative jump by signed immediate byte.
     private void ExecuteJrn()
     {
-        sbyte n = (sbyte)Memory[PC + 1];
-        PC += (ushort)(n + 2);
+        var n = (sbyte)Memory[ProgramCounter + 1];
+        ProgramCounter += (ushort)(n + 2);
     }
 
     // 0x19 - ADD HL, DE - Add DE to HL.
-    private void ExecuteAddHLDE()
+    private void ExecuteAddHlde()
     {
-        ushort result = (ushort)((H << 8) | L);
-        ushort de = (ushort)((D << 8) | E);
+        var result = (ushort)((H << 8) | L);
+        var de = (ushort)((D << 8) | E);
         result += de;
         H = (byte)((result >> 8) & 0xFF);
         L = (byte)(result & 0xFF);
@@ -1364,11 +1346,11 @@ public class GameBoyCPU
         HalfCarry = (result & 0xFFF) < (de & 0xFFF);
         Carry = result < de;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x1A - LD A, (DE) - Load A with value pointed by DE.
-    private void ExecuteLdADE()
+    private void ExecuteLdAde()
     {
         A = Memory[(D << 8) | E];
         Sign = false;
@@ -1376,13 +1358,13 @@ public class GameBoyCPU
         HalfCarry = false;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x1B - DEC DE - Decrement DE.
-    private void ExecuteDecDE()
+    private void ExecuteDecDe()
     {
-        ushort de = (ushort)((D << 8) | E);
+        var de = (ushort)((D << 8) | E);
         de--;
         D = (byte)((de >> 8) & 0xFF);
         E = (byte)(de & 0xFF);
@@ -1391,7 +1373,7 @@ public class GameBoyCPU
         HalfCarry = false;
         Carry = false;
         Parity = (D & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x1C - INC E - Increment E.
@@ -1403,7 +1385,7 @@ public class GameBoyCPU
         HalfCarry = (E & 0xF) == 0;
         Carry = false;
         Parity = (E & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x1D - DEC E - Decrement E.
@@ -1415,32 +1397,32 @@ public class GameBoyCPU
         HalfCarry = (E & 0xF) == 0;
         Carry = false;
         Parity = (E & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x1E - LD E, n - Load E with 8-bit immediate value.
     private void ExecuteLdEn()
     {
-        E = Memory[PC + 1];
+        E = Memory[ProgramCounter + 1];
         Sign = (E >> 7) == 1;
         Zero = E == 0;
         HalfCarry = false;
         Carry = false;
         Parity = (E & 0x01) == 0;
-        PC += 2;
+        ProgramCounter += 2;
     }
 
     // 0x1F - RRA - Rotate A right through carry.
     private void ExecuteRra()
     {
-        byte carry = (byte)(A & 0x01);
+        var carry = (byte)(A & 0x01);
         A = (byte)((A >> 1) | (Carry ? 0x80 : 0x00));
         Sign = false;
         Zero = false;
         HalfCarry = false;
         Carry = (carry == 1);
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
 
@@ -1449,33 +1431,33 @@ public class GameBoyCPU
     {
         if (!Zero)
         {
-            sbyte n = (sbyte)Memory[PC + 1];
-            PC += (ushort)(n + 2);
+            var n = (sbyte)Memory[ProgramCounter + 1];
+            ProgramCounter += (ushort)(n + 2);
         }
         else
         {
-            PC += 2;
+            ProgramCounter += 2;
         }
     }
 
     // 0x21 - LD HL, nn - Load HL with 16-bit immediate value.
     private void ExecuteLdHLnn()
     {
-        H = Memory[PC + 2];
-        L = Memory[PC + 1];
+        H = Memory[ProgramCounter + 2];
+        L = Memory[ProgramCounter + 1];
         Sign = false;
         Zero = false;
         HalfCarry = false;
         Carry = false;
         Parity = (H & 0x01) == 0;
-        PC += 3;
+        ProgramCounter += 3;
     }
 
     // 0x22 - LD (HL+), A - Load A to address pointed by HL, then increment HL.
     private void ExecuteLdHLiA()
 
     {
-        ushort hl = (ushort)((H << 8) | L);
+        var hl = (ushort)((H << 8) | L);
         Memory[hl] = A;
         hl++;
         H = (byte)((hl >> 8) & 0xFF);
@@ -1485,13 +1467,13 @@ public class GameBoyCPU
         HalfCarry = false;
         Carry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x23 - INC HL - Increment HL.
-    private void ExecuteIncHL()
+    private void ExecuteIncHl()
     {
-        ushort hl = (ushort)((H << 8) | L);
+        var hl = (ushort)((H << 8) | L);
         hl++;
         H = (byte)((hl >> 8) & 0xFF);
         L = (byte)(hl & 0xFF);
@@ -1500,7 +1482,7 @@ public class GameBoyCPU
         HalfCarry = false;
         Carry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x24 - INC H - Increment H.
@@ -1512,7 +1494,7 @@ public class GameBoyCPU
         HalfCarry = (H & 0xF) == 0;
         Carry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x25 - DEC H - Decrement H.
@@ -1524,19 +1506,19 @@ public class GameBoyCPU
         HalfCarry = (H & 0xF) == 0;
         Carry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x26 - LD H, n - Load H with 8-bit immediate value.
     private void ExecuteLdHn()
     {
-        H = Memory[PC + 1];
+        H = Memory[ProgramCounter + 1];
         Sign = (H >> 7) == 1;
         Zero = H == 0;
         HalfCarry = false;
         Carry = false;
         Parity = (H & 0x01) == 0;
-        PC += 2;
+        ProgramCounter += 2;
     }
 
     // 0x27 - DAA - Decimal adjust register A.
@@ -1558,7 +1540,7 @@ public class GameBoyCPU
         Zero = A == 0;
         HalfCarry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x28 - JR Z, n - Relative jump by signed immediate byte if Zero flag is set.
@@ -1566,21 +1548,21 @@ public class GameBoyCPU
     {
         if (Zero)
         {
-            sbyte n = (sbyte)Memory[PC + 1];
-            PC += (ushort)(n + 2);
+            var n = (sbyte)Memory[ProgramCounter + 1];
+            ProgramCounter += (ushort)(n + 2);
         }
         else
         {
-            PC += 2;
+            ProgramCounter += 2;
         }
     }
 
 
     // 0x29 - ADD HL, HL - Add HL to HL.
-    private void ExecuteAddHLHL()
+    private void ExecuteAddHlhl()
     {
-        ushort result = (ushort)((H << 8) | L);
-        ushort hl = (ushort)((H << 8) | L);
+        var result = (ushort)((H << 8) | L);
+        var hl = (ushort)((H << 8) | L);
         result += hl;
         H = (byte)((result >> 8) & 0xFF);
         L = (byte)(result & 0xFF);
@@ -1589,28 +1571,28 @@ public class GameBoyCPU
         HalfCarry = (result & 0xFFF) < (hl & 0xFFF);
         Carry = result < hl;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x2A - LD A, (HL+) - Load A from memory address HL then increment HL.
-    private void ExecuteLdAHLPlus()
+    private void ExecuteLdAhlPlus()
     {
-        ushort address = (ushort)((H << 8) | L);
+        var address = (ushort)((H << 8) | L);
         A = Memory[address];
-        ushort result = (ushort)(address + 1);
+        var result = (ushort)(address + 1);
         H = (byte)((result >> 8) & 0xFF);
         L = (byte)(result & 0xFF);
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x2B - DEC HL - Decrement HL.
-    private void ExecuteDecHL()
+    private void ExecuteDecHl()
     {
-        ushort result = (ushort)((H << 8) | L);
+        var result = (ushort)((H << 8) | L);
         result--;
         H = (byte)((result >> 8) & 0xFF);
         L = (byte)(result & 0xFF);
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x2C - INC L - Increment L.
@@ -1621,7 +1603,7 @@ public class GameBoyCPU
         Zero = (L == 0);
         HalfCarry = (L & 0x0F) == 0;
         Parity = (L & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x2D - DEC L - Decrement L.
@@ -1632,18 +1614,18 @@ public class GameBoyCPU
         Zero = (L == 0);
         HalfCarry = (L & 0x0F) == 0;
         Parity = (L & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x2E - LD L, n - Load 8-bit immediate into L.
     private void ExecuteLdLn()
     {
-        L = Memory[PC + 1];
+        L = Memory[ProgramCounter + 1];
         Sign = (L & 0x80) != 0;
         Zero = (L == 0);
         HalfCarry = (L & 0x0F) == 0;
         Parity = (L & 0x01) == 0;
-        PC += 2;
+        ProgramCounter += 2;
     }
 
     // 0x2F - CPL - Complement A register.
@@ -1652,7 +1634,7 @@ public class GameBoyCPU
         A = (byte)~A;
         Sign = true;
         HalfCarry = true;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x30 - JR NC, e - Jump relative if Carry flag is not set.
@@ -1660,75 +1642,48 @@ public class GameBoyCPU
     {
         if (!Carry)
         {
-            sbyte offset = (sbyte)Memory[PC + 1];
-            PC += (ushort)(offset + 2);
+            var offset = (sbyte)Memory[ProgramCounter + 1];
+            ProgramCounter += (ushort)(offset + 2);
         }
         else
         {
-            PC += 2;
+            ProgramCounter += 2;
         }
     }
 
     // 0x31 - LD SP, nn - Load 16-bit immediate into Stack Pointer.
     private void ExecuteLdSpNn()
     {
-        ushort value = (ushort)((Memory[PC + 2] << 8) | Memory[PC + 1]);
-        SP = value;
-        PC += 3;
+        var value = (ushort)((Memory[ProgramCounter + 2] << 8) | Memory[ProgramCounter + 1]);
+        StackPointer = value;
+        ProgramCounter += 3;
     }
 
     // 0x32 - LD (HL-), A - Store A at address HL then decrement HL.
     private void ExecuteLdHlMinusA()
     {
-        ushort address = (ushort)((H << 8) | L);
+        var address = (ushort)((H << 8) | L);
         Memory[address] = A;
-        ushort result = (ushort)(address - 1);
+        var result = (ushort)(address - 1);
         H = (byte)((result >> 8) & 0xFF);
         L = (byte)(result & 0xFF);
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x33 - INC SP - Increment Stack Pointer.
     private void ExecuteIncSp()
     {
-        SP++;
-        PC++;
+        StackPointer++;
+        ProgramCounter++;
     }
 
-    // 0x34 - INC (HL) - Increment value at address HL.
-    private void ExecuteIncHl()
-    {
-        ushort address = (ushort)((H << 8) | L);
-        byte value = Memory[address];
-        value++;
-        Memory[address] = value;
-        Sign = (value & 0x80) != 0;
-        Zero = (value == 0);
-        HalfCarry = (value & 0x0F) == 0;
-        Parity = (value & 0x01) == 0;
-        PC++;
-    }
-
-    // 0x35 - DEC (HL) - Decrement value at address HL.
-    private void ExecuteDecHl()
-    {
-        ushort address = (ushort)((H << 8) | L);
-        byte value = Memory[address];
-        value--;
-        Memory[address] = value;
-        Sign = (value & 0x80) != 0;
-        Zero = (value == 0);
-        HalfCarry = (value & 0x0F) == 0;
-        Parity = (value & 0x01) == 0;
-        PC++;
-    }
 
     // 0x36 - LD (HL), n - Load 8-bit immediate into address HL.
     private void ExecuteLdHln()
     {
-        ushort address = (ushort)((H << 8) | L);
-        Memory[address] = Memory[PC + 1];
-        PC += 2;
+        var address = (ushort)((H << 8) | L);
+        Memory[address] = Memory[ProgramCounter + 1];
+        ProgramCounter += 2;
     }
 
     // 0x37 - SCF - Set Carry flag.
@@ -1737,54 +1692,54 @@ public class GameBoyCPU
         Carry = true;
         Sign = false;
         HalfCarry = false;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x38 - JR C, e - Jump relative if Carry flag is set.
-    private void ExecuteJrCE()
+    private void ExecuteJrCe()
     {
         if (Carry)
         {
-            sbyte offset = (sbyte)Memory[PC + 1];
-            PC += (ushort)(offset + 2);
+            var offset = (sbyte)Memory[ProgramCounter + 1];
+            ProgramCounter += (ushort)(offset + 2);
         }
         else
         {
-            PC += 2;
+            ProgramCounter += 2;
         }
     }
 
     // 0x39 - ADD HL, SP - Add Stack Pointer to HL.
-    private void ExecuteAddHLSP()
+    private void ExecuteAddHlsp()
     {
-        ushort result = (ushort)((H << 8) | L);
-        result += SP;
+        var result = (ushort)((H << 8) | L);
+        result += StackPointer;
         H = (byte)((result >> 8) & 0xFF);
         L = (byte)(result & 0xFF);
         Sign = false;
         Zero = false;
-        HalfCarry = (result & 0xFFF) < (SP & 0xFFF);
-        Carry = result < SP;
+        HalfCarry = (result & 0xFFF) < (StackPointer & 0xFFF);
+        Carry = result < StackPointer;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x3A - LD A, (HL-) - Load A from memory address HL then decrement HL.
-    private void ExecuteLdAHLMinus()
+    private void ExecuteLdAhlMinus()
     {
-        ushort address = (ushort)((H << 8) | L);
+        var address = (ushort)((H << 8) | L);
         A = Memory[address];
-        ushort result = (ushort)(address - 1);
+        var result = (ushort)(address - 1);
         H = (byte)((result >> 8) & 0xFF);
         L = (byte)(result & 0xFF);
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x3B - DEC SP - Decrement Stack Pointer.
     private void ExecuteDecSp()
     {
-        SP--;
-        PC++;
+        StackPointer--;
+        ProgramCounter++;
     }
 
     // 0x3C - INC A - Increment A.
@@ -1795,7 +1750,7 @@ public class GameBoyCPU
         Zero = (A == 0);
         HalfCarry = (A & 0x0F) == 0;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x3D - DEC A - Decrement A.
@@ -1806,18 +1761,18 @@ public class GameBoyCPU
         Zero = (A == 0);
         HalfCarry = (A & 0x0F) == 0;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x3E - LD A, n - Load 8-bit immediate into A.
     private void ExecuteLdAn()
     {
-        A = Memory[PC + 1];
+        A = Memory[ProgramCounter + 1];
         Sign = (A & 0x80) != 0;
         Zero = (A == 0);
         HalfCarry = (A & 0x0F) == 0;
         Parity = (A & 0x01) == 0;
-        PC += 2;
+        ProgramCounter += 2;
     }
 
 
@@ -1829,452 +1784,448 @@ public class GameBoyCPU
         HalfCarry = false;
         Zero = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x40 - LD B, B - Load B with B.
     private void ExecuteLdBb()
     {
-        B = B;
         Sign = (B & 0x80) != 0;
         Zero = B == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x41 - LD B, C - Load B with C.
-    private void ExecuteLdBC()
+    private void ExecuteLdBc()
     {
         B = C;
         Sign = (B & 0x80) != 0;
         Zero = B == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x42 - LD B, D - Load B with D.
-    private void ExecuteLdBD()
+    private void ExecuteLdBd()
     {
         B = D;
         Sign = (B & 0x80) != 0;
         Zero = B == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x43 - LD B, E - Load B with E.
-    private void ExecuteLdBE()
+    private void ExecuteLdBe()
     {
         B = E;
         Sign = (B & 0x80) != 0;
         Zero = B == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x44 - LD B, H - Load B with H.
-    private void ExecuteLdBH()
+    private void ExecuteLdBh()
     {
         B = H;
         Sign = (B & 0x80) != 0;
         Zero = B == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x45 - LD B, L - Load B with L.
-    private void ExecuteLdBL()
+    private void ExecuteLdBl()
     {
         B = L;
         Sign = (B & 0x80) != 0;
         Zero = B == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x46 - LD B, (HL) - Load B with value pointed by HL.
-    private void ExecuteLdBHL()
+    private void ExecuteLdBhl()
     {
-        ushort hl = (ushort)((H << 8) | L);
+        var hl = (ushort)((H << 8) | L);
         B = Memory[hl];
         Sign = (B & 0x80) != 0;
         Zero = B == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x47 - LD B, A - Load B with A.
-    private void ExecuteLdBA()
+    private void ExecuteLdBa()
     {
         B = A;
         Sign = (B & 0x80) != 0;
         Zero = B == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x48 - LD C, B - Load C with B.
-    private void ExecuteLdCB()
+    private void ExecuteLdCb()
     {
         C = B;
         Sign = (C & 0x80) != 0;
         Zero = C == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x49 - LD C, C - Load C with C.
-    private void ExecuteLdCC()
+    private void ExecuteLdCc()
     {
-        C = C;
         Sign = (C & 0x80) != 0;
         Zero = C == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x4A - LD C, D - Load C with D.
-    private void ExecuteLdCD()
+    private void ExecuteLdCd()
     {
         C = D;
         Sign = (C & 0x80) != 0;
         Zero = C == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x4B - LD C, E - Load C with E.
-    private void ExecuteLdCE()
+    private void ExecuteLdCe()
     {
         C = E;
         Sign = (C & 0x80) != 0;
         Zero = C == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x4C - LD C, H - Load C with H.
-    private void ExecuteLdCH()
+    private void ExecuteLdCh()
     {
         C = H;
         Sign = (C & 0x80) != 0;
         Zero = C == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x4D - LD C, L - Load C with L.
-    private void ExecuteLdCL()
+    private void ExecuteLdCl()
     {
         C = L;
         Sign = (C & 0x80) != 0;
         Zero = C == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x4E - LD C, (HL) - Load C with value pointed by HL.
-    private void ExecuteLdCHL()
+    private void ExecuteLdChl()
     {
-        ushort hl = (ushort)((H << 8) | L);
+        var hl = (ushort)((H << 8) | L);
         C = Memory[hl];
         Sign = (C & 0x80) != 0;
         Zero = C == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x4F - LD C, A - Load C with A.
-    private void ExecuteLdCA()
+    private void ExecuteLdCa()
     {
         C = A;
         Sign = (C & 0x80) != 0;
         Zero = C == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x50 - LD D, B - Load D with B.
-    private void ExecuteLdDB()
+    private void ExecuteLdDb()
     {
         D = B;
         Sign = (D & 0x80) != 0;
         Zero = D == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x51 - LD D, C - Load D with C.
-    private void ExecuteLdDC()
+    private void ExecuteLdDc()
     {
         D = C;
         Sign = (D & 0x80) != 0;
         Zero = D == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x52 - LD D, D - Load D with D.
-    private void ExecuteLdDD()
+    private void ExecuteLdDd()
     {
-        D = D;
         Sign = (D & 0x80) != 0;
         Zero = D == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x53 - LD D, E - Load D with E.
-    private void ExecuteLdDE()
+    private void ExecuteLdDe()
     {
         D = E;
         Sign = (D & 0x80) != 0;
         Zero = D == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x54 - LD D, H - Load D with H.
-    private void ExecuteLdDH()
+    private void ExecuteLdDh()
     {
         D = H;
         Sign = (D & 0x80) != 0;
         Zero = D == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x55 - LD D, L - Load D with L.
-    private void ExecuteLdDL()
+    private void ExecuteLdDl()
     {
         D = L;
         Sign = (D & 0x80) != 0;
         Zero = D == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x56 - LD D, (HL) - Load D with value pointed by HL.
-    private void ExecuteLdDHL()
+    private void ExecuteLdDhl()
     {
-        ushort hl = (ushort)((H << 8) | L);
+        var hl = (ushort)((H << 8) | L);
         D = Memory[hl];
         Sign = (D & 0x80) != 0;
         Zero = D == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x57 - LD D, A - Load D with A.
-    private void ExecuteLdDA()
+    private void ExecuteLdDa()
     {
         D = A;
         Sign = (D & 0x80) != 0;
         Zero = D == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x58 - LD E, B - Load E with B.
-    private void ExecuteLdEB()
+    private void ExecuteLdEb()
     {
         E = B;
         Sign = (E & 0x80) != 0;
         Zero = E == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x59 - LD E, C - Load E with C.
-    private void ExecuteLdEC()
+    private void ExecuteLdEc()
     {
         E = C;
         Sign = (E & 0x80) != 0;
         Zero = E == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x5A - LD E, D - Load E with D.
-    private void ExecuteLdED()
+    private void ExecuteLdEd()
     {
         E = D;
         Sign = (E & 0x80) != 0;
         Zero = E == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x5B - LD E, E - Load E with E.
-    private void ExecuteLdEE()
+    private void ExecuteLdEe()
     {
-        E = E;
         Sign = (E & 0x80) != 0;
         Zero = E == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x5C - LD E, H - Load E with H.
-    private void ExecuteLdEH()
+    private void ExecuteLdEh()
     {
         E = H;
         Sign = (E & 0x80) != 0;
         Zero = E == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x5D - LD E, L - Load E with L.
-    private void ExecuteLdEL()
+    private void ExecuteLdEl()
     {
         E = L;
         Sign = (E & 0x80) != 0;
         Zero = E == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x5E - LD E, (HL) - Load E with value pointed by HL.
-    private void ExecuteLdEHL()
+    private void ExecuteLdEhl()
     {
-        ushort hl = (ushort)((H << 8) | L);
+        var hl = (ushort)((H << 8) | L);
         E = Memory[hl];
         Sign = (E & 0x80) != 0;
         Zero = E == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
 
     // 0x5F - LD E, A - Load A into E
-    private void ExecuteLdEA()
+    private void ExecuteLdEa()
     {
         E = A;
         Sign = (A & 0x80) != 0;
         Zero = A == 0;
         HalfCarry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x60 - LD H, B - Load B into H
-    private void ExecuteLdHB()
+    private void ExecuteLdHb()
     {
         H = B;
         Sign = (B & 0x80) != 0;
         Zero = B == 0;
         HalfCarry = false;
         Parity = (B & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x61 - LD H, C - Load C into H
-    private void ExecuteLdHC()
+    private void ExecuteLdHc()
     {
         H = C;
         Sign = (C & 0x80) != 0;
         Zero = C == 0;
         HalfCarry = false;
         Parity = (C & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x62 - LD H, D - Load D into H
-    private void ExecuteLdHD()
+    private void ExecuteLdHd()
     {
         H = D;
         Sign = (D & 0x80) != 0;
         Zero = D == 0;
         HalfCarry = false;
         Parity = (D & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x63 - LD H, E - Load E into H
-    private void ExecuteLdHE()
+    private void ExecuteLdHe()
     {
         H = E;
         Sign = (E & 0x80) != 0;
         Zero = E == 0;
         HalfCarry = false;
         Parity = (E & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x64 - LD H, H - Load H into H
-    private void ExecuteLdHH()
+    private void ExecuteLdHh()
     {
         Sign = (H & 0x80) != 0;
         Zero = H == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x65 - LD H, L - Load L into H
-    private void ExecuteLdHL()
+    private void ExecuteLdHl()
     {
         H = L;
         Sign = (L & 0x80) != 0;
         Zero = L == 0;
         HalfCarry = false;
         Parity = (L & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x66 - LD H, (HL) - Load (HL) into H
-    private void ExecuteLdHHL()
+    private void ExecuteLdHhl()
     {
-        ushort address = (ushort)((H << 8) | L);
+        var address = (ushort)((H << 8) | L);
         H = Memory[address];
         Sign = (H & 0x80) != 0;
         Zero = H == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x67 - LD H, A - Load A into H
-    private void ExecuteLdHA()
+    private void ExecuteLdHa()
     {
         H = A;
         Sign = (A & 0x80) != 0;
         Zero = A == 0;
         HalfCarry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x68 - LD L, B - Load B into L
@@ -2285,656 +2236,656 @@ public class GameBoyCPU
         Zero = B == 0;
         HalfCarry = false;
         Parity = (B & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x69 - LD L, C - Load C into L
-    private void ExecuteLdLC()
+    private void ExecuteLdLc()
     {
         L = C;
         Sign = (C & 0x80) != 0;
         Zero = C == 0;
         HalfCarry = false;
         Parity = (C & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x6A - LD L, D - Load D into L
-    private void ExecuteLdLD()
+    private void ExecuteLdLd()
     {
         L = D;
         Sign = (D & 0x80) != 0;
         Zero = D == 0;
         HalfCarry = false;
         Parity = (D & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x6B - LD L, E - Load E into L
-    private void ExecuteLdLE()
+    private void ExecuteLdLe()
     {
         L = E;
         Sign = (E & 0x80) != 0;
         Zero = E == 0;
         HalfCarry = false;
         Parity = (E & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x6C - LD L, H - Load H into L
-    private void ExecuteLdLH()
+    private void ExecuteLdLh()
     {
         L = H;
         Sign = (H & 0x80) != 0;
         Zero = H == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x6D - LD L, L - Load L into L
-    private void ExecuteLdLL()
+    private void ExecuteLdLl()
     {
         Sign = (L & 0x80) != 0;
         Zero = L == 0;
         HalfCarry = false;
         Parity = (L & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x6E - LD L, (HL) - Load (HL) into L
-    private void ExecuteLdLHL()
+    private void ExecuteLdLhl()
     {
-        ushort address = (ushort)((H << 8) | L);
+        var address = (ushort)((H << 8) | L);
         L = Memory[address];
         Sign = (L & 0x80) != 0;
         Zero = L == 0;
         HalfCarry = false;
         Parity = (L & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x6F - LD L, A - Load A into L
-    private void ExecuteLdLA()
+    private void ExecuteLdLa()
     {
         L = A;
         Sign = (A & 0x80) != 0;
         Zero = A == 0;
         HalfCarry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
 
     // 0x70 - LD (HL), B - Load B into (HL)
-    private void ExecuteLdHLB()
+    private void ExecuteLdHlb()
     {
-        ushort address = (ushort)((H << 8) | L);
+        var address = (ushort)((H << 8) | L);
         Memory[address] = B;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x71 - LD (HL), C - Load C into (HL)
-    private void ExecuteLdHLC()
+    private void ExecuteLdHlc()
     {
-        ushort address = (ushort)((H << 8) | L);
+        var address = (ushort)((H << 8) | L);
         Memory[address] = C;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x72 - LD (HL), D - Load D into (HL)
-    private void ExecuteLdHLD()
+    private void ExecuteLdHld()
     {
-        ushort address = (ushort)((H << 8) | L);
+        var address = (ushort)((H << 8) | L);
         Memory[address] = D;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x73 - LD (HL), E - Load E into (HL)
-    private void ExecuteLdHLE()
+    private void ExecuteLdHle()
     {
-        ushort address = (ushort)((H << 8) | L);
+        var address = (ushort)((H << 8) | L);
         Memory[address] = E;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x74 - LD (HL), H - Load H into (HL)
-    private void ExecuteLdHLH()
+    private void ExecuteLdHlh()
     {
-        ushort address = (ushort)((H << 8) | L);
+        var address = (ushort)((H << 8) | L);
         Memory[address] = H;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x75 - LD (HL), L - Load L into (HL)
-    private void ExecuteLdHLL()
+    private void ExecuteLdHll()
     {
-        ushort address = (ushort)((H << 8) | L);
+        var address = (ushort)((H << 8) | L);
         Memory[address] = L;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x76 - HALT - Halts the processor until an interrupt occurs.
     private void ExecuteHalt()
     {
-        StopCPU = true;
+        Halt = true;
         //Do nothing
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x77 - LD (HL), A - Load A into (HL)
-    private void ExecuteLdHLA()
+    private void ExecuteLdHla()
     {
-        ushort address = (ushort)((H << 8) | L);
+        var address = (ushort)((H << 8) | L);
         Memory[address] = A;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x78 - LD A, B - Load B into A
-    private void ExecuteLdAB()
+    private void ExecuteLdAb()
     {
         A = B;
         Sign = (B & 0x80) != 0;
         Zero = B == 0;
         HalfCarry = false;
         Parity = (B & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x79 - LD A, C - Load C into A
-    private void ExecuteLdAC()
+    private void ExecuteLdAc()
     {
         A = C;
         Sign = (C & 0x80) != 0;
         Zero = C == 0;
         HalfCarry = false;
         Parity = (C & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x7A - LD A, D - Load D into A
-    private void ExecuteLdAD()
+    private void ExecuteLdAd()
     {
         A = D;
         Sign = (D & 0x80) != 0;
         Zero = D == 0;
         HalfCarry = false;
         Parity = (D & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x7B - LD A, E - Load E into A
-    private void ExecuteLdAE()
+    private void ExecuteLdAe()
     {
         A = E;
         Sign = (E & 0x80) != 0;
         Zero = E == 0;
         HalfCarry = false;
         Parity = (E & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x7C - LD A, H - Load H into A
-    private void ExecuteLdAH()
+    private void ExecuteLdAh()
     {
         A = H;
         Sign = (H & 0x80) != 0;
         Zero = H == 0;
         HalfCarry = false;
         Parity = (H & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x7D - LD A, L - Load L into A
-    private void ExecuteLdAL()
+    private void ExecuteLdAl()
     {
         A = L;
         Sign = (L & 0x80) != 0;
         Zero = L == 0;
         HalfCarry = false;
         Parity = (L & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x7E - LD A, (HL) - Load (HL)
-    private void ExecuteLdAHL()
+    private void ExecuteLdAhl()
     {
-        ushort address = (ushort)((H << 8) | L);
+        var address = (ushort)((H << 8) | L);
         A = Memory[address];
         Sign = (A & 0x80) != 0;
         Zero = A == 0;
         HalfCarry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x7F - LD A, A - Load A into A
-    private void ExecuteLdAA()
+    private void ExecuteLdAa()
     {
         Sign = (A & 0x80) != 0;
         Zero = A == 0;
         HalfCarry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x80 - ADD A, B - Add B to A
-    private void ExecuteAddAB()
+    private void ExecuteAddAb()
     {
-        byte result = (byte)(A + B);
+        var result = (byte)(A + B);
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) + (B & 0xF) > 0xF;
         Carry = result < A;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x81 - ADD A, C - Add C to A
-    private void ExecuteAddAC()
+    private void ExecuteAddAc()
     {
-        byte result = (byte)(A + C);
+        var result = (byte)(A + C);
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) + (C & 0xF) > 0xF;
         Carry = result < A;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x82 - ADD A, D - Add D to A
-    private void ExecuteAddAD()
+    private void ExecuteAddAd()
     {
-        byte result = (byte)(A + D);
+        var result = (byte)(A + D);
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) + (D & 0xF) > 0xF;
         Carry = result < A;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x83 - ADD A, E - Add E to A
-    private void ExecuteAddAE()
+    private void ExecuteAddAe()
     {
-        byte result = (byte)(A + E);
+        var result = (byte)(A + E);
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) + (E & 0xF) > 0xF;
         Carry = result < A;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x84 - ADD A, H - Add H to A
-    private void ExecuteAddAH()
+    private void ExecuteAddAh()
     {
-        byte result = (byte)(A + H);
+        var result = (byte)(A + H);
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) + (H & 0xF) > 0xF;
         Carry = result < A;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
 
     // 0x85 - ADD A, L - Add L to A.
-    private void ExecuteAddAL()
+    private void ExecuteAddAl()
     {
-        byte result = (byte)(A + L);
+        var result = (byte)(A + L);
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) + (L & 0xF) > 0xF;
         Carry = (A + L) > 0xFF;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x86 - ADD A, (HL) - Add (HL) to A.
-    private void ExecuteAddAHL()
+    private void ExecuteAddAhl()
     {
-        byte result = (byte)(A + Memory[(H << 8) | L]);
+        var result = (byte)(A + Memory[(H << 8) | L]);
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) + (Memory[(H << 8) | L] & 0xF) > 0xF;
         Carry = (A + Memory[(H << 8) | L]) > 0xFF;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x87 - ADD A, A - Add A to A.
-    private void ExecuteAddAA()
+    private void ExecuteAddAa()
     {
-        byte result = (byte)(A + A);
+        var result = (byte)(A + A);
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) + (A & 0xF) > 0xF;
         Carry = (A + A) > 0xFF;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x88 - ADC A, B - Add B + Carry flag to A.
-    private void ExecuteAdcAB()
+    private void ExecuteAdcAb()
     {
-        byte result = (byte)(A + B + (Carry ? 1 : 0));
+        var result = (byte)(A + B + (Carry ? 1 : 0));
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) + (B & 0xF) + (Carry ? 1 : 0) > 0xF;
         Carry = (A + B + (Carry ? 1 : 0)) > 0xFF;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x89 - ADC A, C - Add C + Carry flag to A.
-    private void ExecuteAdcAC()
+    private void ExecuteAdcAc()
     {
-        byte result = (byte)(A + C + (Carry ? 1 : 0));
+        var result = (byte)(A + C + (Carry ? 1 : 0));
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) + (C & 0xF) + (Carry ? 1 : 0) > 0xF;
         Carry = (A + C + (Carry ? 1 : 0)) > 0xFF;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x8A - ADC A, D - Add D + Carry flag to A.
-    private void ExecuteAdcAD()
+    private void ExecuteAdcAd()
     {
-        byte result = (byte)(A + D + (Carry ? 1 : 0));
+        var result = (byte)(A + D + (Carry ? 1 : 0));
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) + (D & 0xF) + (Carry ? 1 : 0) > 0xF;
         Carry = (A + D + (Carry ? 1 : 0)) > 0xFF;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x8B - ADC A, E - Add E + Carry flag to A.
-    private void ExecuteAdcAE()
+    private void ExecuteAdcAe()
     {
-        byte result = (byte)(A + E + (Carry ? 1 : 0));
+        var result = (byte)(A + E + (Carry ? 1 : 0));
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) + (E & 0xF) + (Carry ? 1 : 0) > 0xF;
         Carry = (A + E + (Carry ? 1 : 0)) > 0xFF;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x8C - ADC A, H - Add H + Carry flag to A.
-    private void ExecuteAdcAH()
+    private void ExecuteAdcAh()
     {
-        byte result = (byte)(A + H + (Carry ? 1 : 0));
+        var result = (byte)(A + H + (Carry ? 1 : 0));
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) + (H & 0xF) + (Carry ? 1 : 0) > 0xF;
         Carry = (A + H + (Carry ? 1 : 0)) > 0xFF;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x8D - ADC A, L - Add L + Carry flag to A.
-    private void ExecuteAdcAL()
+    private void ExecuteAdcAl()
     {
-        byte result = (byte)(A + L + (Carry ? 1 : 0));
+        var result = (byte)(A + L + (Carry ? 1 : 0));
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) + (L & 0xF) + (Carry ? 1 : 0) > 0xF;
         Carry = (A + L + (Carry ? 1 : 0)) > 0xFF;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x8E - ADC A, (HL) - Add (HL) + Carry flag to A.
-    private void ExecuteAdcAHL()
+    private void ExecuteAdcAhl()
     {
-        byte result = (byte)(A + Memory[(H << 8) | L] + (Carry ? 1 : 0));
+        var result = (byte)(A + Memory[(H << 8) | L] + (Carry ? 1 : 0));
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) + (Memory[(H << 8) | L] & 0xF) + (Carry ? 1 : 0) > 0xF;
         Carry = (A + Memory[(H << 8) | L] + (Carry ? 1 : 0)) > 0xFF;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x8F - ADC A, A - Add A + Carry flag to A.
-    private void ExecuteAdcAA()
+    private void ExecuteAdcAa()
     {
-        byte result = (byte)(A + A + (Carry ? 1 : 0));
+        var result = (byte)(A + A + (Carry ? 1 : 0));
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) + (A & 0xF) + (Carry ? 1 : 0) > 0xF;
         Carry = (A + A + (Carry ? 1 : 0)) > 0xFF;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x90 - SUB B - Subtract B from A.
     private void ExecuteSubB()
     {
-        byte result = (byte)(A - B);
+        var result = (byte)(A - B);
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) < (B & 0xF);
         Carry = A < B;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x91 - SUB C - Subtract C from A.
     private void ExecuteSubC()
     {
-        byte result = (byte)(A - C);
+        var result = (byte)(A - C);
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) < (C & 0xF);
         Carry = A < C;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x92 - SUB D - Subtract D from A.
     private void ExecuteSubD()
     {
-        byte result = (byte)(A - D);
+        var result = (byte)(A - D);
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) < (D & 0xF);
         Carry = A < D;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x93 - SUB E - Subtract E from A.
     private void ExecuteSubE()
     {
-        byte result = (byte)(A - E);
+        var result = (byte)(A - E);
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) < (E & 0xF);
         Carry = A < E;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x94 - SUB H - Subtract H from A.
     private void ExecuteSubH()
     {
-        byte result = (byte)(A - H);
+        var result = (byte)(A - H);
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) < (H & 0xF);
         Carry = A < H;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x95 - SUB L - Subtract L from A.
     private void ExecuteSubL()
     {
-        byte result = (byte)(A - L);
+        var result = (byte)(A - L);
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) < (L & 0xF);
         Carry = A < L;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x96 - SUB (HL) - Subtract (HL) from A.
-    private void ExecuteSubHL()
+    private void ExecuteSubHl()
     {
-        byte result = (byte)(A - Memory[(H << 8) | L]);
+        var result = (byte)(A - Memory[(H << 8) | L]);
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) < (Memory[(H << 8) | L] & 0xF);
         Carry = A < Memory[(H << 8) | L];
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x97 - SUB A - Subtract A from A.
     private void ExecuteSubA()
     {
-        byte result = (byte)(A - A);
+        var result = (byte)(A - A);
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
-        HalfCarry = (A & 0xF) < (A & 0xF);
-        Carry = A < A;
+        HalfCarry = false;
+        Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x98 - SBC A, B - Subtract B + Carry flag from A.
-    private void ExecuteSbcAB()
+    private void ExecuteSbcAb()
     {
-        byte result = (byte)(A - B - (Carry ? 1 : 0));
+        var result = (byte)(A - B - (Carry ? 1 : 0));
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) < (B & 0xF) - (Carry ? 1 : 0);
         Carry = A < B - (Carry ? 1 : 0);
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x99 - SBC A, C - Subtract C + Carry flag from A.
-    private void ExecuteSbcAC()
+    private void ExecuteSbcAc()
     {
-        byte result = (byte)(A - C - (Carry ? 1 : 0));
+        var result = (byte)(A - C - (Carry ? 1 : 0));
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) < (C & 0xF) - (Carry ? 1 : 0);
         Carry = A < C - (Carry ? 1 : 0);
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x9A - SBC A, D - Subtract D + Carry flag from A.
-    private void ExecuteSbcAD()
+    private void ExecuteSbcAd()
     {
-        byte result = (byte)(A - D - (Carry ? 1 : 0));
+        var result = (byte)(A - D - (Carry ? 1 : 0));
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) < (D & 0xF) - (Carry ? 1 : 0);
         Carry = A < D - (Carry ? 1 : 0);
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x9B - SBC A, E - Subtract E + Carry flag from A.
-    private void ExecuteSbcAE()
+    private void ExecuteSbcAe()
     {
-        byte result = (byte)(A - E - (Carry ? 1 : 0));
+        var result = (byte)(A - E - (Carry ? 1 : 0));
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) < (E & 0xF) - (Carry ? 1 : 0);
         Carry = A < E - (Carry ? 1 : 0);
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
 
     // 0x9C - SBC A, H - Subtract H + Carry flag from A.
-    private void ExecuteSbcAH()
+    private void ExecuteSbcAh()
     {
-        byte result = (byte)(A - H - (Carry ? 1 : 0));
+        var result = (byte)(A - H - (Carry ? 1 : 0));
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) < (H & 0xF) + (Carry ? 1 : 0);
         Carry = (A & 0xFF) < (H & 0xFF) + (Carry ? 1 : 0);
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x9D - SBC A, L - Subtract L + Carry flag from A.
-    private void ExecuteSbcAL()
+    private void ExecuteSbcAl()
     {
-        byte result = (byte)(A - L - (Carry ? 1 : 0));
+        var result = (byte)(A - L - (Carry ? 1 : 0));
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) < (L & 0xF) + (Carry ? 1 : 0);
         Carry = (A & 0xFF) < (L & 0xFF) + (Carry ? 1 : 0);
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
 
     // 0x9E - SUB A, (HL) - Subtract (HL) from A.
-    private void ExecuteSubAHL()
+    private void ExecuteSubAhl()
     {
-        byte val = Memory[(H << 8) | L];
+        var val = Memory[(H << 8) | L];
         A = (byte)(A - val);
         Sign = (A & 0x80) != 0;
         Zero = A == 0;
         HalfCarry = (A & 0x0F) > (val & 0x0F);
         Carry = A < val;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0x9F - SBC A, A - Subtract A and carry flag from A.
-    private void ExecuteSbcAA()
+    private void ExecuteSbcAa()
     {
-        byte val = A;
+        var val = A;
         A = (byte)(A - val - (Carry ? 1 : 0));
         Sign = (A & 0x80) != 0;
         Zero = A == 0;
         HalfCarry = (A & 0x0F) > (val & 0x0F);
         Carry = A < val;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
 
@@ -2947,7 +2898,7 @@ public class GameBoyCPU
         HalfCarry = true;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xA1 - AND C - Logical AND C with A.
@@ -2959,7 +2910,7 @@ public class GameBoyCPU
         HalfCarry = true;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xA2 - AND D - Logical AND D with A.
@@ -2971,7 +2922,7 @@ public class GameBoyCPU
         HalfCarry = true;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xA3 - AND E - Logical AND E with A.
@@ -2983,7 +2934,7 @@ public class GameBoyCPU
         HalfCarry = true;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xA4 - AND H - Logical AND H with A.
@@ -2995,7 +2946,7 @@ public class GameBoyCPU
         HalfCarry = true;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xA5 - AND L - Logical AND L with A.
@@ -3007,20 +2958,20 @@ public class GameBoyCPU
         HalfCarry = true;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xA6 - AND (HL) - Logical AND (HL) with A.
-    private void ExecuteAndHL()
+    private void ExecuteAndHl()
     {
-        byte address = (byte)((H << 8) | L);
+        var address = (byte)((H << 8) | L);
         A &= Memory[address];
         Sign = (A & 0x80) != 0;
         Zero = A == 0;
         HalfCarry = true;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xA7 - AND A - Logical AND A with A.
@@ -3031,7 +2982,7 @@ public class GameBoyCPU
         HalfCarry = true;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xA8 - XOR B - Logical XOR B with A.
@@ -3043,7 +2994,7 @@ public class GameBoyCPU
         HalfCarry = false;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xA9 - XOR C - Logical XOR C with A.
@@ -3055,7 +3006,7 @@ public class GameBoyCPU
         HalfCarry = false;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xAA - XOR D - Logical XOR D with A.
@@ -3067,7 +3018,7 @@ public class GameBoyCPU
         HalfCarry = false;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xAB - XOR E - Logical XOR E with A.
@@ -3079,7 +3030,7 @@ public class GameBoyCPU
         HalfCarry = false;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xAC - XOR H - Logical XOR H with A.
@@ -3091,7 +3042,7 @@ public class GameBoyCPU
         HalfCarry = false;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xAD - XOR L - Logical XOR L with A.
@@ -3103,20 +3054,20 @@ public class GameBoyCPU
         HalfCarry = false;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xAE - XOR (HL) - Logical XOR (HL) with A.
-    private void ExecuteXorHL()
+    private void ExecuteXorHl()
     {
-        byte address = (byte)((H << 8) | L);
+        var address = (byte)((H << 8) | L);
         A ^= Memory[address];
         Sign = (A & 0x80) != 0;
         Zero = A == 0;
         HalfCarry = false;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xAF - XOR A - Logical XOR A with A.
@@ -3128,7 +3079,7 @@ public class GameBoyCPU
         HalfCarry = false;
         Carry = false;
         Parity = true;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xB0 - OR B - Logical OR B with A.
@@ -3140,7 +3091,7 @@ public class GameBoyCPU
         HalfCarry = false;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xB1 - OR C - Logical OR C with A.
@@ -3152,7 +3103,7 @@ public class GameBoyCPU
         HalfCarry = false;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xB2 - OR D - Logical OR D with A.
@@ -3164,7 +3115,7 @@ public class GameBoyCPU
         HalfCarry = false;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xB3 - OR E - Logical OR E with A.
@@ -3176,7 +3127,7 @@ public class GameBoyCPU
         HalfCarry = false;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xB4 - OR H - Logical OR H with A.
@@ -3188,7 +3139,7 @@ public class GameBoyCPU
         HalfCarry = false;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xB5 - OR L - Logical OR L with A.
@@ -3200,20 +3151,20 @@ public class GameBoyCPU
         HalfCarry = false;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xB6 - OR (HL) - Logical OR (HL) with A.
-    private void ExecuteOrHL()
+    private void ExecuteOrHl()
     {
-        byte address = (byte)((H << 8) | L);
+        var address = (byte)((H << 8) | L);
         A |= Memory[address];
         Sign = (A & 0x80) != 0;
         Zero = A == 0;
         HalfCarry = false;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xB7 - OR A - Logical OR A with A.
@@ -3224,50 +3175,50 @@ public class GameBoyCPU
         HalfCarry = false;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xB8 - CP B - Compare B with A.
     private void ExecuteCpB()
     {
-        byte result = (byte)(A - B);
+        var result = (byte)(A - B);
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) < (B & 0xF);
         Carry = (A & 0xFF) < (B & 0xFF);
         Parity = (result & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xB9 - CP C - Compare C with A.
     private void ExecuteCpC()
     {
-        byte result = (byte)(A - C);
+        var result = (byte)(A - C);
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) < (C & 0xF);
         Carry = (A & 0xFF) < (C & 0xFF);
         Parity = (result & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xBA - CP D - Compare D with A.
     private void ExecuteCpD()
     {
-        byte result = (byte)(A - D);
+        var result = (byte)(A - D);
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) < (D & 0xF);
         Carry = (A & 0xFF) < (D & 0xFF);
         Parity = (result & 0x01) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
 
     // 0xBB - CP E - Compare E with A.
     private void ExecuteCpE()
     {
-        byte result = (byte)(A - E);
+        var result = (byte)(A - E);
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) < (E & 0xF);
@@ -3275,13 +3226,13 @@ public class GameBoyCPU
         Parity = (((result & 0x1) ^ ((result & 0x2) >> 1) ^ ((result & 0x4) >> 2) ^ ((result & 0x8) >> 3) ^
                    ((result & 0x10) >> 4) ^ ((result & 0x20) >> 5) ^ ((result & 0x40) >> 6) ^ ((result & 0x80) >> 7)) &
                   0x1) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xBC - CP H - Compare H with A.
     private void ExecuteCpH()
     {
-        byte result = (byte)(A - H);
+        var result = (byte)(A - H);
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) < (H & 0xF);
@@ -3289,13 +3240,13 @@ public class GameBoyCPU
         Parity = (((result & 0x1) ^ ((result & 0x2) >> 1) ^ ((result & 0x4) >> 2) ^ ((result & 0x8) >> 3) ^
                    ((result & 0x10) >> 4) ^ ((result & 0x20) >> 5) ^ ((result & 0x40) >> 6) ^ ((result & 0x80) >> 7)) &
                   0x1) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xBD - CP L - Compare L with A.
     private void ExecuteCpL()
     {
-        byte result = (byte)(A - L);
+        var result = (byte)(A - L);
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) < (L & 0xF);
@@ -3303,13 +3254,13 @@ public class GameBoyCPU
         Parity = (((result & 0x1) ^ ((result & 0x2) >> 1) ^ ((result & 0x4) >> 2) ^ ((result & 0x8) >> 3) ^
                    ((result & 0x10) >> 4) ^ ((result & 0x20) >> 5) ^ ((result & 0x40) >> 6) ^ ((result & 0x80) >> 7)) &
                   0x1) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xBE - CP (HL) - Compare (HL) with A.
-    private void ExecuteCpHL()
+    private void ExecuteCpHl()
     {
-        byte result = (byte)(A - Memory[(H << 8) | L]);
+        var result = (byte)(A - Memory[(H << 8) | L]);
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
         HalfCarry = (A & 0xF) < (Memory[(H << 8) | L] & 0xF);
@@ -3317,44 +3268,44 @@ public class GameBoyCPU
         Parity = (((result & 0x1) ^ ((result & 0x2) >> 1) ^ ((result & 0x4) >> 2) ^ ((result & 0x8) >> 3) ^
                    ((result & 0x10) >> 4) ^ ((result & 0x20) >> 5) ^ ((result & 0x40) >> 6) ^ ((result & 0x80) >> 7)) &
                   0x1) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xBF - CP A - Compare A with A.
     private void ExecuteCpA()
     {
-        byte result = (byte)(A - A);
+        var result = (byte)(A - A);
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
-        HalfCarry = (A & 0xF) < (A & 0xF);
-        Carry = A < A;
+        HalfCarry = false;
+        Carry = false;
         Parity = (((result & 0x1) ^ ((result & 0x2) >> 1) ^ ((result & 0x4) >> 2) ^ ((result & 0x8) >> 3) ^
                    ((result & 0x10) >> 4) ^ ((result & 0x20) >> 5) ^ ((result & 0x40) >> 6) ^ ((result & 0x80) >> 7)) &
                   0x1) == 0;
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xC0 - RET NZ - Return if Z flag is not set.
-    private void ExecuteRetNZ()
+    private void ExecuteRetNz()
     {
         if (!Zero)
         {
-            SP += 2;
-            PC = (ushort)(Memory[SP] << 8 | Memory[SP + 1]);
+            StackPointer += 2;
+            ProgramCounter = (ushort)(Memory[StackPointer] << 8 | Memory[StackPointer + 1]);
         }
         else
         {
-            PC++;
+            ProgramCounter++;
         }
     }
 
     // 0xC1 - POP BC - Pop two bytes off stack into BC.
-    private void ExecutePopBC()
+    private void ExecutePopBc()
     {
-        C = Memory[SP + 1];
-        B = Memory[SP];
-        SP += 2;
-        PC++;
+        C = Memory[StackPointer + 1];
+        B = Memory[StackPointer];
+        StackPointer += 2;
+        ProgramCounter++;
     }
 
     // 0xC2 - JP NZ, nn - Jump to address nn if Z flag is not set.
@@ -3362,18 +3313,18 @@ public class GameBoyCPU
     {
         if (!Zero)
         {
-            PC = (ushort)(Memory[PC + 2] << 8 | Memory[PC + 1]);
+            ProgramCounter = (ushort)(Memory[ProgramCounter + 2] << 8 | Memory[ProgramCounter + 1]);
         }
         else
         {
-            PC += 3;
+            ProgramCounter += 3;
         }
     }
 
     // 0xC3 - JP nn - Jump to address nn.
     private void ExecuteJpnn()
     {
-        PC = (ushort)(Memory[PC + 2] << 8 | Memory[PC + 1]);
+        ProgramCounter = (ushort)(Memory[ProgramCounter + 2] << 8 | Memory[ProgramCounter + 1]);
     }
 
 
@@ -3382,48 +3333,48 @@ public class GameBoyCPU
     {
         if (!Zero)
         {
-            SP -= 2;
-            Memory[SP] = (byte)((PC + 3) >> 8);
-            Memory[SP + 1] = (byte)((PC + 3) & 0xFF);
-            PC = (ushort)(Memory[PC + 1] << 8 | Memory[PC + 2]);
+            StackPointer -= 2;
+            Memory[StackPointer] = (byte)((ProgramCounter + 3) >> 8);
+            Memory[StackPointer + 1] = (byte)((ProgramCounter + 3) & 0xFF);
+            ProgramCounter = (ushort)(Memory[ProgramCounter + 1] << 8 | Memory[ProgramCounter + 2]);
         }
         else
         {
-            PC += 3;
+            ProgramCounter += 3;
         }
     }
 
     // 0xC5 - PUSH BC - Push BC onto stack.
-    private void ExecutePushBC()
+    private void ExecutePushBc()
     {
-        Memory[SP] = B;
-        Memory[SP + 1] = C;
-        SP -= 2;
-        PC++;
+        Memory[StackPointer] = B;
+        Memory[StackPointer + 1] = C;
+        StackPointer -= 2;
+        ProgramCounter++;
     }
 
     // 0xC6 - ADD A, n - Add n to A.
     private void ExecuteAddAn()
     {
-        byte result = (byte)(A + Memory[PC + 1]);
+        var result = (byte)(A + Memory[ProgramCounter + 1]);
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
-        HalfCarry = (A & 0xF) + (Memory[PC + 1] & 0xF) > 0xF;
-        Carry = A + Memory[PC + 1] > 0xFF;
+        HalfCarry = (A & 0xF) + (Memory[ProgramCounter + 1] & 0xF) > 0xF;
+        Carry = A + Memory[ProgramCounter + 1] > 0xFF;
         Parity = (((result & 0x1) ^ ((result & 0x2) >> 1) ^ ((result & 0x4) >> 2) ^ ((result & 0x8) >> 3) ^
                    ((result & 0x10) >> 4) ^ ((result & 0x20) >> 5) ^ ((result & 0x40) >> 6) ^ ((result & 0x80) >> 7)) &
                   0x1) == 0;
-        PC += 2;
+        ProgramCounter += 2;
     }
 
     // 0xC7 - RST 0 - Reset program counter to address 0x00.
     private void ExecuteRst0()
     {
-        SP -= 2;
-        Memory[SP] = (byte)(PC >> 8);
-        Memory[SP + 1] = (byte)(PC & 0xFF);
-        PC = 0x00;
+        StackPointer -= 2;
+        Memory[StackPointer] = (byte)(ProgramCounter >> 8);
+        Memory[StackPointer + 1] = (byte)(ProgramCounter & 0xFF);
+        ProgramCounter = 0x00;
     }
 
     // 0xC8 - RET Z - Return if Z flag is set.
@@ -3431,20 +3382,20 @@ public class GameBoyCPU
     {
         if (Zero)
         {
-            SP += 2;
-            PC = (ushort)(Memory[SP] << 8 | Memory[SP + 1]);
+            StackPointer += 2;
+            ProgramCounter = (ushort)(Memory[StackPointer] << 8 | Memory[StackPointer + 1]);
         }
         else
         {
-            PC++;
+            ProgramCounter++;
         }
     }
 
     // 0xC9 - RET - Return.
     private void ExecuteRet()
     {
-        SP += 2;
-        PC = (ushort)(Memory[SP] << 8 | Memory[SP + 1]);
+        StackPointer += 2;
+        ProgramCounter = (ushort)(Memory[StackPointer] << 8 | Memory[StackPointer + 1]);
     }
 
     // 0xCA - JP Z, nn - Jump to address nn if Z flag is set.
@@ -3452,11 +3403,11 @@ public class GameBoyCPU
     {
         if (Zero)
         {
-            PC = (ushort)(Memory[PC + 1] << 8 | Memory[PC + 2]);
+            ProgramCounter = (ushort)(Memory[ProgramCounter + 1] << 8 | Memory[ProgramCounter + 2]);
         }
         else
         {
-            PC += 3;
+            ProgramCounter += 3;
         }
     }
 
@@ -3466,66 +3417,66 @@ public class GameBoyCPU
     {
         if (Zero)
         {
-            SP -= 2;
-            Memory[SP] = (byte)((PC + 3) >> 8);
-            Memory[SP + 1] = (byte)((PC + 3) & 0xFF);
-            PC = (ushort)(Memory[PC + 1] << 8 | Memory[PC + 2]);
+            StackPointer -= 2;
+            Memory[StackPointer] = (byte)((ProgramCounter + 3) >> 8);
+            Memory[StackPointer + 1] = (byte)((ProgramCounter + 3) & 0xFF);
+            ProgramCounter = (ushort)(Memory[ProgramCounter + 1] << 8 | Memory[ProgramCounter + 2]);
         }
         else
         {
-            PC += 3;
+            ProgramCounter += 3;
         }
     }
 
     // 0xCD - CALL nn - Call address nn.
     private void ExecuteCallnn()
     {
-        SP -= 2;
-        Memory[SP] = (byte)((PC + 3) >> 8);
-        Memory[SP + 1] = (byte)((PC + 3) & 0xFF);
-        PC = (ushort)(Memory[PC + 1] << 8 | Memory[PC + 2]);
+        StackPointer -= 2;
+        Memory[StackPointer] = (byte)((ProgramCounter + 3) >> 8);
+        Memory[StackPointer + 1] = (byte)((ProgramCounter + 3) & 0xFF);
+        ProgramCounter = (ushort)(Memory[ProgramCounter + 1] << 8 | Memory[ProgramCounter + 2]);
     }
 
     // 0xCE - ADC A, n - Add n + Carry flag to A.
     private void ExecuteAdcAn()
     {
-        byte result = (byte)(A + Memory[PC + 1] + (Carry ? 1 : 0));
+        var result = (byte)(A + Memory[ProgramCounter + 1] + (Carry ? 1 : 0));
         A = result;
         Sign = (result & 0x80) != 0;
         Zero = result == 0;
-        HalfCarry = (A & 0xF) + (Memory[PC + 1] & 0xF) + (Carry ? 1 : 0) > 0xF;
-        Carry = A + Memory[PC + 1] + (Carry ? 1 : 0) > 0xFF;
+        HalfCarry = (A & 0xF) + (Memory[ProgramCounter + 1] & 0xF) + (Carry ? 1 : 0) > 0xF;
+        Carry = A + Memory[ProgramCounter + 1] + (Carry ? 1 : 0) > 0xFF;
         Parity = (((result & 0x1) ^ ((result & 0x2) >> 1) ^ ((result & 0x4) >> 2) ^ ((result & 0x8) >> 3) ^
                    ((result & 0x10) >> 4) ^ ((result & 0x20) >> 5) ^ ((result & 0x40) >> 6) ^ ((result & 0x80) >> 7)) &
                   0x1) == 0;
-        PC += 2;
+        ProgramCounter += 2;
     }
 
     // 0xCF - RST 8 - Push PC onto stack and jump to address 0x08.
     private void ExecuteRst8()
     {
-        SP -= 2;
-        Memory[SP] = (byte)(PC >> 8);
-        Memory[SP + 1] = (byte)(PC & 0xFF);
-        PC = 0x08;
+        StackPointer -= 2;
+        Memory[StackPointer] = (byte)(ProgramCounter >> 8);
+        Memory[StackPointer + 1] = (byte)(ProgramCounter & 0xFF);
+        ProgramCounter = 0x08;
     }
 
     // 0xD0 - RET NC - If last result was not carried, return from subroutine.
-    private void ExecuteRetNC()
+    private void ExecuteRetNc()
     {
         if (!Carry)
         {
-            PC = (ushort)((Memory[SP] << 8) | Memory[SP + 1]);
-            SP += 2;
+            ProgramCounter = (ushort)((Memory[StackPointer] << 8) | Memory[StackPointer + 1]);
+            StackPointer += 2;
         }
     }
 
     // 0xD1 - POP DE - Pop two bytes from stack into DE.
-    private void ExecutePopDE()
+    private void ExecutePopDe()
     {
-        D = Memory[SP];
-        E = Memory[SP + 1];
-        SP += 2;
+        D = Memory[StackPointer];
+        E = Memory[StackPointer + 1];
+        StackPointer += 2;
     }
 
     // 0xD2 - JP NC, nn - If last result was not carried, jump to address nn.
@@ -3533,22 +3484,22 @@ public class GameBoyCPU
     {
         if (!Carry)
         {
-            ushort address = (ushort)((Memory[PC + 2] << 8) | Memory[PC + 1]);
-            PC = address;
+            var address = (ushort)((Memory[ProgramCounter + 2] << 8) | Memory[ProgramCounter + 1]);
+            ProgramCounter = address;
         }
         else
         {
-            PC += 2;
+            ProgramCounter += 2;
         }
     }
 
     // 0xD3 - OUT (n), A - Output A to port n.
     private void ExecuteOutnA()
     {
-        byte port = Memory[PC + 1];
+        var port = Memory[ProgramCounter + 1];
         // Output A to port n in the implementation
         Console.Write((char)port);
-        PC += 2;
+        ProgramCounter += 2;
     }
 
     // 0xD4 - CALL NC, nn - If last result was not carried, call address nn.
@@ -3556,54 +3507,54 @@ public class GameBoyCPU
     {
         if (!Carry)
         {
-            ushort address = (ushort)((Memory[PC + 2] << 8) | Memory[PC + 1]);
-            SP -= 2;
-            Memory[SP] = (byte)(PC >> 8);
-            Memory[SP + 1] = (byte)(PC & 0xFF);
-            PC = address;
+            var address = (ushort)((Memory[ProgramCounter + 2] << 8) | Memory[ProgramCounter + 1]);
+            StackPointer -= 2;
+            Memory[StackPointer] = (byte)(ProgramCounter >> 8);
+            Memory[StackPointer + 1] = (byte)(ProgramCounter & 0xFF);
+            ProgramCounter = address;
         }
         else
         {
-            PC += 2;
+            ProgramCounter += 2;
         }
     }
 
     // 0xD5 - PUSH DE - Push DE onto stack.
-    private void ExecutePushDE()
+    private void ExecutePushDe()
     {
-        SP -= 2;
-        Memory[SP] = D;
-        Memory[SP + 1] = E;
+        StackPointer -= 2;
+        Memory[StackPointer] = D;
+        Memory[StackPointer + 1] = E;
     }
 
     // 0xD6 - SUB n - Subtract n from A.
     private void ExecuteSubn()
     {
-        byte n = Memory[PC + 1];
-        byte result = (byte)(A - n);
+        var n = Memory[ProgramCounter + 1];
+        var result = (byte)(A - n);
         Zero = result == 0;
         Sign = result > 0x7F;
         HalfCarry = (A & 0xF) < (n & 0xF);
         int x = A;
         x = x - n;
         x = x & 0xff;
-        int y = x;
+        var y = x;
         y = y ^ (x >> 4);
         y = y ^ (y >> 2);
         y = y ^ (y >> 1);
         Carry = A < n;
         Parity = (y & 0x01) != 0;
         A = result;
-        PC += 2;
+        ProgramCounter += 2;
     }
 
     // 0xD7 - RST 10 - Push PC onto stack and jump to address 0x10.
     private void ExecuteRst10()
     {
-        SP -= 2;
-        Memory[SP] = (byte)(PC >> 8);
-        Memory[SP + 1] = (byte)(PC & 0xFF);
-        PC = 0x10;
+        StackPointer -= 2;
+        Memory[StackPointer] = (byte)(ProgramCounter >> 8);
+        Memory[StackPointer + 1] = (byte)(ProgramCounter & 0xFF);
+        ProgramCounter = 0x10;
     }
 
     // 0xD8 - RET C - If last result carried, return from subroutine.
@@ -3611,16 +3562,16 @@ public class GameBoyCPU
     {
         if (Carry)
         {
-            PC = (ushort)((Memory[SP] << 8) | Memory[SP + 1]);
-            SP += 2;
+            ProgramCounter = (ushort)((Memory[StackPointer] << 8) | Memory[StackPointer + 1]);
+            StackPointer += 2;
         }
     }
 
     // 0xD9 - RETI - Enable interrupts and return from subroutine.
     private void ExecuteRetI()
     {
-        PC = (ushort)((Memory[SP] << 8) | Memory[SP + 1]);
-        SP += 2;
+        ProgramCounter = (ushort)((Memory[StackPointer] << 8) | Memory[StackPointer + 1]);
+        StackPointer += 2;
         // Enable interrupts in the implementation
     }
 
@@ -3629,21 +3580,13 @@ public class GameBoyCPU
     {
         if (Carry)
         {
-            ushort address = (ushort)((Memory[PC + 2] << 8) | Memory[PC + 1]);
-            PC = address;
+            var address = (ushort)((Memory[ProgramCounter + 2] << 8) | Memory[ProgramCounter + 1]);
+            ProgramCounter = address;
         }
         else
         {
-            PC += 2;
+            ProgramCounter += 2;
         }
-    }
-
-    // 0xDB - IN A, (n) - Input A from port n.
-    private void ExecuteInAn()
-    {
-        byte port = Memory[PC + 1];
-        // Input A from port n in the implementation
-        PC += 2;
     }
 
     // 0xDC - CALL C, nn - If last result carried, call address nn.
@@ -3651,15 +3594,15 @@ public class GameBoyCPU
     {
         if (Carry)
         {
-            ushort address = (ushort)((Memory[PC + 2] << 8) | Memory[PC + 1]);
-            SP -= 2;
-            Memory[SP] = (byte)(PC >> 8);
-            Memory[SP + 1] = (byte)(PC & 0xFF);
-            PC = address;
+            var address = (ushort)((Memory[ProgramCounter + 2] << 8) | Memory[ProgramCounter + 1]);
+            StackPointer -= 2;
+            Memory[StackPointer] = (byte)(ProgramCounter >> 8);
+            Memory[StackPointer + 1] = (byte)(ProgramCounter & 0xFF);
+            ProgramCounter = address;
         }
         else
         {
-            PC += 2;
+            ProgramCounter += 2;
         }
     }
 
@@ -3668,8 +3611,8 @@ public class GameBoyCPU
 
     private void ExecuteSbcAn()
     {
-        byte n = Memory[PC + 1];
-        byte result = (byte)(A - n - (Carry ? 1 : 0));
+        var n = Memory[ProgramCounter + 1];
+        var result = (byte)(A - n - (Carry ? 1 : 0));
         A = result;
         Zero = result == 0;
         Sign = result > 0x7F;
@@ -3678,32 +3621,32 @@ public class GameBoyCPU
         Parity = ((result & 0x01) ^ ((result & 0x02) >> 1) ^ ((result & 0x04) >> 2) ^ ((result & 0x08) >> 3)
                   ^ ((result & 0x10) >> 4) ^ ((result & 0x20) >> 5) ^ ((result & 0x40) >> 6) ^
                   ((result & 0x80) >> 7)) == 0;
-        PC += 2;
+        ProgramCounter += 2;
     }
 
     // 0xDF - RST 18 - Push PC onto stack and jump to address 0x18.
     private void ExecuteRst18()
     {
-        SP -= 2;
-        Memory[SP] = (byte)(PC >> 8);
-        Memory[SP + 1] = (byte)(PC & 0xFF);
-        PC = 0x18;
+        StackPointer -= 2;
+        Memory[StackPointer] = (byte)(ProgramCounter >> 8);
+        Memory[StackPointer + 1] = (byte)(ProgramCounter & 0xFF);
+        ProgramCounter = 0x18;
     }
 
     // 0xE0 - LDH (n), A - Put A into address 0xFF00 + n.
     private void ExecuteLdhAn()
     {
-        ushort address = (ushort)((0xFF00 + Memory[PC + 1]) % 0xFFFF);
+        var address = (ushort)((0xFF00 + Memory[ProgramCounter + 1]) % 0xFFFF);
         Memory[address] = A;
-        PC += 2;
+        ProgramCounter += 2;
     }
 
     // 0xE1 - POP HL - Pop two bytes from stack into HL.
-    private void ExecutePopHL()
+    private void ExecutePopHl()
     {
-        H = Memory[SP];
-        L = Memory[SP + 1];
-        SP += 2;
+        H = Memory[StackPointer];
+        L = Memory[StackPointer + 1];
+        StackPointer += 2;
     }
 
 
@@ -3717,63 +3660,63 @@ public class GameBoyCPU
 
 
     // 0xE5 - PUSH HL - Push HL onto the stack.
-    private void ExecutePushHL()
+    private void ExecutePushHl()
     {
-        ushort hl = (ushort)((H << 8) | L);
-        Memory[SP - 1] = (byte)((hl >> 8) & 0xFF);
-        Memory[SP - 2] = (byte)(hl & 0xFF);
-        SP -= 2;
-        PC++;
+        var hl = (ushort)((H << 8) | L);
+        Memory[StackPointer - 1] = (byte)((hl >> 8) & 0xFF);
+        Memory[StackPointer - 2] = (byte)(hl & 0xFF);
+        StackPointer -= 2;
+        ProgramCounter++;
     }
 
     // 0xE6 - AND n - Logically AND n with A, result in A.
     private void ExecuteAndN()
     {
-        A &= Memory[PC + 1];
+        A &= Memory[ProgramCounter + 1];
         Sign = (A & 0x80) != 0;
         Zero = A == 0;
         HalfCarry = true;
         Parity = (A & 0x01) == 0;
         Carry = false;
-        PC += 2;
+        ProgramCounter += 2;
     }
 
     // 0xE7 - RST 20 - Push present address onto stack and jump to address 0020h.
     private void ExecuteRst20()
     {
-        Memory[SP - 1] = (byte)((PC >> 8) & 0xFF);
-        Memory[SP - 2] = (byte)(PC & 0xFF);
-        SP -= 2;
-        PC = 0x0020;
+        Memory[StackPointer - 1] = (byte)((ProgramCounter >> 8) & 0xFF);
+        Memory[StackPointer - 2] = (byte)(ProgramCounter & 0xFF);
+        StackPointer -= 2;
+        ProgramCounter = 0x0020;
     }
 
     // 0xE8 - ADD SP, n - Add n to SP.
     private void ExecuteAddSPn()
     {
-        sbyte n = (sbyte)Memory[PC + 1];
-        ushort result = (ushort)(SP + n);
+        var n = (sbyte)Memory[ProgramCounter + 1];
+        var result = (ushort)(StackPointer + n);
         Sign = false;
         Zero = false;
-        HalfCarry = (SP & 0xF) + (n & 0xF) > 0xF;
-        Carry = (SP & 0xFF) + (n & 0xFF) > 0xFF;
+        HalfCarry = (StackPointer & 0xF) + (n & 0xF) > 0xF;
+        Carry = (StackPointer & 0xFF) + (n & 0xFF) > 0xFF;
         Parity = (result & 0x01) == 0;
-        SP = result;
-        PC += 2;
+        StackPointer = result;
+        ProgramCounter += 2;
     }
 
     // 0xE9 - JP (HL) - Jump to address contained in HL.
-    private void ExecuteJpHL()
+    private void ExecuteJpHl()
     {
-        ushort address = (ushort)((H << 8) | L);
-        PC = address;
+        var address = (ushort)((H << 8) | L);
+        ProgramCounter = address;
     }
 
     // 0xEA - LD (nn), A - Put A into address nn.
     private void ExecuteLdnnA()
     {
-        ushort address = (ushort)((ushort)((Memory[PC + 2] << 8) | Memory[PC + 1]) % 0x10000);
+        var address = (ushort)((ushort)((Memory[ProgramCounter + 2] << 8) | Memory[ProgramCounter + 1]) % 0x10000);
         Memory[address] = A;
-        PC = (ushort)((PC + 3) % 0x10000);
+        ProgramCounter = (ushort)((ProgramCounter + 3) % 0x10000);
     }
 
     // 0xEB - 
@@ -3785,129 +3728,129 @@ public class GameBoyCPU
     // 0xEE - XOR n - Logical exclusive OR n with A, result in A.
     private void ExecuteXorn()
     {
-        byte n = Memory[PC + 1];
+        var n = Memory[ProgramCounter + 1];
         A ^= n;
         Sign = (A & 0x80) != 0;
         Zero = A == 0;
         HalfCarry = false;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC += 2;
+        ProgramCounter += 2;
     }
 
     // 0xEF - RST 28H - Push present address onto stack. Jump to address 0x0028.
     private void ExecuteRst28()
     {
-        SP -= 2;
-        Memory[SP] = (byte)((PC >> 8) & 0xFF);
-        Memory[SP + 1] = (byte)(PC & 0xFF);
-        PC = 0x0028;
+        StackPointer -= 2;
+        Memory[StackPointer] = (byte)((ProgramCounter >> 8) & 0xFF);
+        Memory[StackPointer + 1] = (byte)(ProgramCounter & 0xFF);
+        ProgramCounter = 0x0028;
     }
 
 
     // 0xF0 - LDH A, (n) - Put value at address 0xFF00 + n into A.
     private void ExecuteLdHAa8()
     {
-        byte n = Memory[PC + 1];
+        var n = Memory[ProgramCounter + 1];
         A = Memory[0xFF00 + (n % 0xFF)];
-        PC += 2;
+        ProgramCounter += 2;
     }
 
 
     // 0xF1 - POP AF - Pop two bytes from stack into AF.
-    private void ExecutePopAF()
+    private void ExecutePopAf()
     {
-        A = Memory[SP + 1];
-        byte flags = Memory[SP];
+        A = Memory[StackPointer + 1];
+        var flags = Memory[StackPointer];
         Zero = (flags & 0x80) != 0;
         Sign = (flags & 0x40) != 0;
         HalfCarry = (flags & 0x20) != 0;
         Parity = (flags & 0x04) != 0;
         Carry = (flags & 0x01) != 0;
-        SP += 2;
-        PC++;
+        StackPointer += 2;
+        ProgramCounter++;
     }
 
     // 0xF2 - LD A, (C) - Put value at address 0xFF00 + C into A.
 
 
     // 0xF3 - DI - Disable interrupts after instruction.
-    private void ExecuteDI()
+    private void ExecuteDi()
     {
         //TODO: Implement interrupt disabling.
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xF4 -  
 
     // 0xF5 - PUSH AF - Push AF onto stack.
-    private void ExecutePushAF()
+    private void ExecutePushAf()
     {
-        Memory[SP] = (byte)((Zero ? 0x80 : 0x00) | (Sign ? 0x40 : 0x00) | (HalfCarry ? 0x20 : 0x00) |
-                            (Parity ? 0x04 : 0x00) | (Carry ? 0x01 : 0x00));
-        Memory[SP + 1] = A;
-        SP -= 2;
-        PC++;
+        Memory[StackPointer] = (byte)((Zero ? 0x80 : 0x00) | (Sign ? 0x40 : 0x00) | (HalfCarry ? 0x20 : 0x00) |
+                                      (Parity ? 0x04 : 0x00) | (Carry ? 0x01 : 0x00));
+        Memory[StackPointer + 1] = A;
+        StackPointer -= 2;
+        ProgramCounter++;
     }
 
     // 0xF6 - OR n - Logical OR n with A, result in A.
     private void ExecuteOrn()
     {
-        byte n = Memory[PC + 1];
+        var n = Memory[ProgramCounter + 1];
         A |= n;
         Sign = (A & 0x80) != 0;
         Zero = A == 0;
         HalfCarry = false;
         Carry = false;
         Parity = (A & 0x01) == 0;
-        PC += 2;
+        ProgramCounter += 2;
     }
 
     // 0xF7 - RST 30H - Push present address onto stack. Jump to address 0x0030.
     private void ExecuteRst30()
     {
-        SP -= 2;
-        Memory[SP] = (byte)((PC >> 8) & 0xFF);
-        Memory[SP + 1] = (byte)(PC & 0xFF);
-        PC = 0x0030;
+        StackPointer -= 2;
+        Memory[StackPointer] = (byte)((ProgramCounter >> 8) & 0xFF);
+        Memory[StackPointer + 1] = (byte)(ProgramCounter & 0xFF);
+        ProgramCounter = 0x0030;
     }
 
     // 0xF8 - LD HL, SP+n - Put SP + n into HL.
-    private void ExecuteLdHLSPn()
+    private void ExecuteLdHlsPn()
     {
-        sbyte n = (sbyte)Memory[PC + 1];
-        ushort result = (ushort)(SP + n);
+        var n = (sbyte)Memory[ProgramCounter + 1];
+        var result = (ushort)(StackPointer + n);
         H = (byte)((result >> 8) & 0xFF);
         L = (byte)(result & 0xFF);
         Sign = false;
         Zero = false;
-        HalfCarry = (SP & 0xF) + (n & 0xF) > 0xF;
-        Carry = (SP & 0xFF) + (n & 0xFF) > 0xFF;
+        HalfCarry = (StackPointer & 0xF) + (n & 0xF) > 0xF;
+        Carry = (StackPointer & 0xFF) + (n & 0xFF) > 0xFF;
         Parity = (H & 0x01) == 0;
-        PC += 2;
+        ProgramCounter += 2;
     }
 
     // 0xF9 - LD SP, HL - Put HL into SP.
-    private void ExecuteLdSPHL()
+    private void ExecuteLdSphl()
     {
-        ushort hl = (ushort)((H << 8) | L);
-        SP = hl;
-        PC++;
+        var hl = (ushort)((H << 8) | L);
+        StackPointer = hl;
+        ProgramCounter++;
     }
 
     // 0xFA - LD A, (nn) - Put value at address nn into A.
     private void ExecuteLdAnn()
     {
-        ushort address = (ushort)((Memory[PC + 2] << 8) | Memory[PC + 1]);
+        var address = (ushort)((Memory[ProgramCounter + 2] << 8) | Memory[ProgramCounter + 1]);
         A = Memory[address];
-        PC += 3;
+        ProgramCounter += 3;
     }
 
     // 0xFB - EI - Enable interrupts after instruction.
-    private void ExecuteEI()
+    private void ExecuteEi()
     {
         //TODO: Implement interrupt enabling.
-        PC++;
+        ProgramCounter++;
     }
 
     // 0xFC - 
@@ -3917,39 +3860,39 @@ public class GameBoyCPU
     // 0xFE - CP n - Compare A with n.
     private void ExecuteCpn()
     {
-        byte n = Memory[PC + 1];
+        var n = Memory[ProgramCounter + 1];
         Sign = (A & 0x80) != (n & 0x80);
         Zero = A == n;
         HalfCarry = (A & 0xF) < (n & 0xF);
         Carry = A < n;
         Parity = (A & 0x01) == (n & 0x01);
-        PC += 2;
+        ProgramCounter += 2;
     }
 
     // 0xFF - RST 38H - Push present address onto stack. Jump to address 0x0038.
     private void ExecuteRst38()
     {
-        SP -= 2;
-        Memory[SP] = (byte)((PC >> 8) & 0xFF);
-        Memory[SP + 1] = (byte)(PC & 0xFF);
-        PC = 0x0038;
+        StackPointer -= 2;
+        Memory[StackPointer] = (byte)((ProgramCounter >> 8) & 0xFF);
+        Memory[StackPointer + 1] = (byte)(ProgramCounter & 0xFF);
+        ProgramCounter = 0x0038;
     }
 
 
-    public void ExecutePrefixCB()
+    public void ExecutePrefixCb()
     {
-        byte opcode = Memory[PC + 1];
+        var opcode = Memory[ProgramCounter + 1];
         switch (opcode)
         {
             case 0x00: // RLC B
-                byte bit0 = (byte)(B & 0x80);
+                var bit0 = (byte)(B & 0x80);
                 B = (byte)((B << 1) | bit0);
                 Zero = B == 0;
                 Carry = bit0 == 0x80;
                 Sign = B > 0x7F;
                 Parity = IsParity(B);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x01: // RLC C
                 bit0 = (byte)(C & 0x80);
@@ -3959,7 +3902,7 @@ public class GameBoyCPU
                 Sign = C > 0x7F;
                 Parity = IsParity(C);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x02: // RLC D
                 bit0 = (byte)(D & 0x80);
@@ -3969,7 +3912,7 @@ public class GameBoyCPU
                 Sign = D > 0x7F;
                 Parity = IsParity(D);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x03: // RLC E
                 bit0 = (byte)(E & 0x80);
@@ -3979,7 +3922,7 @@ public class GameBoyCPU
                 Sign = E > 0x7F;
                 Parity = IsParity(E);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x04: // RLC H
                 bit0 = (byte)(H & 0x80);
@@ -3989,7 +3932,7 @@ public class GameBoyCPU
                 Sign = H > 0x7F;
                 Parity = IsParity(H);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x05: // RLC L
                 bit0 = (byte)(L & 0x80);
@@ -3999,7 +3942,7 @@ public class GameBoyCPU
                 Sign = L > 0x7F;
                 Parity = IsParity(L);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
 
             case 0x06: // RLC (HL)
@@ -4008,9 +3951,9 @@ public class GameBoyCPU
                 Zero = Memory[(H << 8) | L] == 0;
                 Carry = bit0 == 1;
                 Sign = Memory[(H << 8) | L] > 0x7F;
-                Parity = IsParity((byte)(Memory[(H << 8) | L]));
+                Parity = IsParity(Memory[(H << 8) | L]);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x07: // RLC A
                 bit0 = (byte)(A & 0x01);
@@ -4020,7 +3963,7 @@ public class GameBoyCPU
                 Sign = A > 0x7F;
                 Parity = IsParity(A);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x08: // RRC B
                 bit0 = (byte)(B & 0x01);
@@ -4030,7 +3973,7 @@ public class GameBoyCPU
                 Sign = B > 0x7F;
                 Parity = IsParity(B);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x09: // RRC C
                 bit0 = (byte)(C & 0x01);
@@ -4040,7 +3983,7 @@ public class GameBoyCPU
                 Sign = C > 0x7F;
                 Parity = IsParity(C);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x0A: // RRC D
                 bit0 = (byte)(D & 0x01);
@@ -4050,7 +3993,7 @@ public class GameBoyCPU
                 Sign = D > 0x7F;
                 Parity = IsParity(D);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x0B: // RRC E
                 bit0 = (byte)(E & 0x01);
@@ -4060,7 +4003,7 @@ public class GameBoyCPU
                 Sign = E > 0x7F;
                 Parity = IsParity(E);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
 
             case 0x0C: // RRC H
@@ -4071,7 +4014,7 @@ public class GameBoyCPU
                 Sign = H > 0x7F;
                 Parity = IsParity(H);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x0D: // RRC L
                 bit0 = (byte)(L & 0x01);
@@ -4081,7 +4024,7 @@ public class GameBoyCPU
                 Sign = L > 0x7F;
                 Parity = IsParity(L);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x0E: // RRC (HL)
                 bit0 = (byte)(Memory[(H << 8) | L] & 0x01);
@@ -4089,9 +4032,9 @@ public class GameBoyCPU
                 Zero = Memory[(H << 8) | L] == 0;
                 Carry = bit0 == 1;
                 Sign = Memory[(H << 8) | L] > 0x7F;
-                Parity = IsParity((byte)(Memory[(H << 8) | L]));
+                Parity = IsParity(Memory[(H << 8) | L]);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x0F: // RRC A
                 bit0 = (byte)(A & 0x01);
@@ -4101,7 +4044,7 @@ public class GameBoyCPU
                 Sign = A > 0x7F;
                 Parity = IsParity(A);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x10: // RL B
                 bit0 = (byte)(B & 0x80);
@@ -4111,7 +4054,7 @@ public class GameBoyCPU
                 Sign = B > 0x7F;
                 Parity = IsParity(B);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x11: // RL C
                 bit0 = (byte)(C & 0x80);
@@ -4121,7 +4064,7 @@ public class GameBoyCPU
                 Sign = C > 0x7F;
                 Parity = IsParity(C);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x12: // RL D
                 bit0 = (byte)(D & 0x80);
@@ -4131,7 +4074,7 @@ public class GameBoyCPU
                 Sign = D > 0x7F;
                 Parity = IsParity(D);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
 
             case 0x13: // RL E
@@ -4142,7 +4085,7 @@ public class GameBoyCPU
                 Sign = E > 0x7F;
                 Parity = IsParity(E);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x14: // RL H
                 bit0 = (byte)(H & 0x01);
@@ -4152,7 +4095,7 @@ public class GameBoyCPU
                 Sign = H > 0x7F;
                 Parity = IsParity(H);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x15: // RL L
                 bit0 = (byte)(L & 0x01);
@@ -4162,7 +4105,7 @@ public class GameBoyCPU
                 Sign = L > 0x7F;
                 Parity = IsParity(L);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x16: // RL (HL)
                 bit0 = (byte)(Memory[(H << 8) | L] & 0x01);
@@ -4170,9 +4113,9 @@ public class GameBoyCPU
                 Zero = Memory[(H << 8) | L] == 0;
                 Carry = bit0 == 1;
                 Sign = Memory[(H << 8) | L] > 0x7F;
-                Parity = IsParity((byte)(Memory[(H << 8) | L]));
+                Parity = IsParity(Memory[(H << 8) | L]);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x17: // RL A
                 bit0 = (byte)(A & 0x01);
@@ -4182,7 +4125,7 @@ public class GameBoyCPU
                 Sign = A > 0x7F;
                 Parity = IsParity(A);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x18: // RR B
                 bit0 = (byte)(B & 0x01);
@@ -4192,7 +4135,7 @@ public class GameBoyCPU
                 Sign = B > 0x7F;
                 Parity = IsParity(B);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x19: // RR C
                 bit0 = (byte)(C & 0x01);
@@ -4202,7 +4145,7 @@ public class GameBoyCPU
                 Sign = C > 0x7F;
                 Parity = IsParity(C);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
 
             case 0x1A: // RR D
@@ -4213,7 +4156,7 @@ public class GameBoyCPU
                 Sign = D > 0x7F;
                 Parity = IsParity(D);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x1B: // RR E
                 bit0 = (byte)(E & 0x01);
@@ -4223,7 +4166,7 @@ public class GameBoyCPU
                 Sign = E > 0x7F;
                 Parity = IsParity(E);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x1C: // RR H
                 bit0 = (byte)(H & 0x01);
@@ -4233,7 +4176,7 @@ public class GameBoyCPU
                 Sign = H > 0x7F;
                 Parity = IsParity(H);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x1D: // RR L
                 bit0 = (byte)(L & 0x01);
@@ -4243,7 +4186,7 @@ public class GameBoyCPU
                 Sign = L > 0x7F;
                 Parity = IsParity(L);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x1E: // RR (HL)
                 bit0 = (byte)(Memory[(H << 8) | L] & 0x01);
@@ -4251,9 +4194,9 @@ public class GameBoyCPU
                 Zero = Memory[(H << 8) | L] == 0;
                 Carry = bit0 == 1;
                 Sign = Memory[(H << 8) | L] > 0x7F;
-                Parity = IsParity((byte)(Memory[(H << 8) | L]));
+                Parity = IsParity(Memory[(H << 8) | L]);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x1F: // RR A
                 bit0 = (byte)(A & 0x01);
@@ -4263,7 +4206,7 @@ public class GameBoyCPU
                 Sign = A > 0x7F;
                 Parity = IsParity(A);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x20: // SLA B
                 bit0 = (byte)(B & 0x80);
@@ -4273,7 +4216,7 @@ public class GameBoyCPU
                 Sign = B > 0x7F;
                 Parity = IsParity(B);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x21: // SLA C
                 bit0 = (byte)(C & 0x80);
@@ -4283,7 +4226,7 @@ public class GameBoyCPU
                 Sign = C > 0x7F;
                 Parity = IsParity(C);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x22: // SLA D
                 bit0 = (byte)(D & 0x80);
@@ -4293,7 +4236,7 @@ public class GameBoyCPU
                 Sign = D > 0x7F;
                 Parity = IsParity(D);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
 
 
@@ -4304,7 +4247,7 @@ public class GameBoyCPU
                 Sign = A > 0x7F;
                 Parity = IsParity(A);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x24: // SLA H
                 A = (byte)((H << 1) | (H >> 7));
@@ -4313,7 +4256,7 @@ public class GameBoyCPU
                 Sign = A > 0x7F;
                 Parity = IsParity(A);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x25: // SLA L
                 A = (byte)((L << 1) | (L >> 7));
@@ -4322,7 +4265,7 @@ public class GameBoyCPU
                 Sign = A > 0x7F;
                 Parity = IsParity(A);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x26: // SLA (HL)
                 bit0 = (byte)(Memory[(H << 8) | L] & 0x01);
@@ -4330,9 +4273,9 @@ public class GameBoyCPU
                 Zero = Memory[(H << 8) | L] == 0;
                 Carry = bit0 == 1;
                 Sign = Memory[(H << 8) | L] > 0x7F;
-                Parity = IsParity((byte)(Memory[(H << 8) | L]));
+                Parity = IsParity(Memory[(H << 8) | L]);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x27: // SLA A
                 A = (byte)((A << 1) | (A >> 7));
@@ -4341,7 +4284,7 @@ public class GameBoyCPU
                 Sign = A > 0x7F;
                 Parity = IsParity(A);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x28: // SRA B
                 A = (byte)((B >> 1) | (B << 7));
@@ -4350,7 +4293,7 @@ public class GameBoyCPU
                 Sign = A > 0x7F;
                 Parity = IsParity(A);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x29: // SRA C
                 A = (byte)((C >> 1) | (C << 7));
@@ -4359,7 +4302,7 @@ public class GameBoyCPU
                 Sign = A > 0x7F;
                 Parity = IsParity(A);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x2A: // SRA D
                 A = (byte)((D >> 1) | (D << 7));
@@ -4368,7 +4311,7 @@ public class GameBoyCPU
                 Sign = A > 0x7F;
                 Parity = IsParity(A);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x2B: // SRA E
                 A = (byte)((E >> 1) | (E << 7));
@@ -4377,7 +4320,7 @@ public class GameBoyCPU
                 Sign = A > 0x7F;
                 Parity = IsParity(A);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
 
             case 0x2C: // SRA H
@@ -4388,7 +4331,7 @@ public class GameBoyCPU
                 Sign = H > 0x7F;
                 Parity = IsParity(H);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x2D: // SRA L
                 bit0 = (byte)(L & 0x01);
@@ -4398,7 +4341,7 @@ public class GameBoyCPU
                 Sign = L > 0x7F;
                 Parity = IsParity(L);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x2E: // SRA (HL)
                 bit0 = (byte)(Memory[(H << 8) | L] & 0x01);
@@ -4406,9 +4349,9 @@ public class GameBoyCPU
                 Zero = Memory[(H << 8) | L] == 0;
                 Carry = bit0 == 1;
                 Sign = Memory[(H << 8) | L] > 0x7F;
-                Parity = IsParity((byte)(Memory[(H << 8) | L]));
+                Parity = IsParity(Memory[(H << 8) | L]);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x2F: // SRA A
                 bit0 = (byte)(A & 0x01);
@@ -4418,7 +4361,7 @@ public class GameBoyCPU
                 Sign = A > 0x7F;
                 Parity = IsParity(A);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x30: // SWAP B
                 B = (byte)((B << 4) | (B >> 4));
@@ -4427,7 +4370,7 @@ public class GameBoyCPU
                 Sign = B > 0x7F;
                 Parity = IsParity(B);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x31: // SWAP C
                 C = (byte)((C << 4) | (C >> 4));
@@ -4436,7 +4379,7 @@ public class GameBoyCPU
                 Sign = C > 0x7F;
                 Parity = IsParity(C);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x32: // SWAP D
                 D = (byte)((D << 4) | (D >> 4));
@@ -4445,7 +4388,7 @@ public class GameBoyCPU
                 Sign = D > 0x7F;
                 Parity = IsParity(D);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x33: // SWAP E
                 E = (byte)((E << 4) | (E >> 4));
@@ -4454,7 +4397,7 @@ public class GameBoyCPU
                 Sign = E > 0x7F;
                 Parity = IsParity(E);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
 
             case 0x34: // SWAP H
@@ -4464,7 +4407,7 @@ public class GameBoyCPU
                 Parity = IsParity(A);
                 Carry = false;
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x35: // SWAP L
                 A = (byte)((L >> 4) | (L << 4));
@@ -4473,7 +4416,7 @@ public class GameBoyCPU
                 Parity = IsParity(A);
                 Carry = false;
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x36: // SWAP (HL)
                 A = (byte)((Memory[(H << 8) | L] >> 4) | (Memory[(H << 8) | L] << 4));
@@ -4483,7 +4426,7 @@ public class GameBoyCPU
                 Parity = IsParity(A);
                 Carry = false;
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x37: // SWAP A
                 A = (byte)((A >> 4) | (A << 4));
@@ -4492,7 +4435,7 @@ public class GameBoyCPU
                 Parity = IsParity(A);
                 Carry = false;
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x38: // SRL B
                 bit0 = (byte)(B & 0x01);
@@ -4502,7 +4445,7 @@ public class GameBoyCPU
                 Sign = B > 0x7F;
                 Parity = IsParity(B);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x39: // SRL C
                 bit0 = (byte)(C & 0x01);
@@ -4512,7 +4455,7 @@ public class GameBoyCPU
                 Sign = C > 0x7F;
                 Parity = IsParity(C);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x3A: // SRL D
                 bit0 = (byte)(D & 0x01);
@@ -4522,7 +4465,7 @@ public class GameBoyCPU
                 Sign = D > 0x7F;
                 Parity = IsParity(D);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x3B: // SRL E
                 bit0 = (byte)(E & 0x01);
@@ -4532,7 +4475,7 @@ public class GameBoyCPU
                 Sign = E > 0x7F;
                 Parity = IsParity(E);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
 
             case 0x3C: // SRL H
@@ -4543,7 +4486,7 @@ public class GameBoyCPU
                 Sign = H > 0x7F;
                 Parity = IsParity(H);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x3D: // SRL L
                 bit0 = (byte)(L & 0x01);
@@ -4553,7 +4496,7 @@ public class GameBoyCPU
                 Sign = L > 0x7F;
                 Parity = IsParity(L);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x3E: // SRL (HL)
                 bit0 = (byte)(Memory[(H << 8) | L] & 0x01);
@@ -4561,9 +4504,9 @@ public class GameBoyCPU
                 Zero = Memory[(H << 8) | L] == 0;
                 Carry = bit0 == 1;
                 Sign = Memory[(H << 8) | L] > 0x7F;
-                Parity = IsParity((byte)(Memory[(H << 8) | L]));
+                Parity = IsParity(Memory[(H << 8) | L]);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x3F: // SRL A
                 bit0 = (byte)(A & 0x01);
@@ -4573,42 +4516,42 @@ public class GameBoyCPU
                 Sign = A > 0x7F;
                 Parity = IsParity(A);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x40: // BIT 0,B
                 Zero = (B & 0x01) == 0;
                 Sign = B > 0x7F;
                 Parity = IsParity(B);
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x41: // BIT 0,C
                 Zero = (C & 0x01) == 0;
                 Sign = C > 0x7F;
                 Parity = IsParity(C);
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x42: // BIT 0,D
                 Zero = (D & 0x01) == 0;
                 Sign = D > 0x7F;
                 Parity = IsParity(D);
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x43: // BIT 0,E
                 Zero = (E & 0x01) == 0;
                 Sign = E > 0x7F;
                 Parity = IsParity(E);
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x44: // BIT 0,H
                 Zero = (H & 0x01) == 0;
                 Sign = H > 0x7F;
                 Parity = IsParity(H);
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
 
             case 0x45: // BIT 0,L
@@ -4616,70 +4559,70 @@ public class GameBoyCPU
                 Sign = (L & 0x80) > 0;
                 Parity = IsParity(L);
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x46: // BIT 0,(HL)
                 Zero = (Memory[(H << 8) | L] & 0x01) == 0;
                 Sign = (Memory[(H << 8) | L] & 0x80) > 0;
                 Parity = IsParity(Memory[(H << 8) | L]);
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x47: // BIT 0,A
                 Zero = (A & 0x01) == 0;
                 Sign = (A & 0x80) > 0;
                 Parity = IsParity(A);
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x48: // BIT 1,B
                 Zero = (B & 0x02) == 0;
                 Sign = (B & 0x80) > 0;
                 Parity = IsParity(B);
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x49: // BIT 1,C
                 Zero = (C & 0x02) == 0;
                 Sign = (C & 0x80) > 0;
                 Parity = IsParity(C);
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x4A: // BIT 1,D
                 Zero = (D & 0x02) == 0;
                 Sign = (D & 0x80) > 0;
                 Parity = IsParity(D);
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x4B: // BIT 1,E
                 Zero = (E & 0x02) == 0;
                 Sign = (E & 0x80) > 0;
                 Parity = IsParity(E);
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x4C: // BIT 1,H
                 Zero = (H & 0x02) == 0;
                 Sign = (H & 0x80) > 0;
                 Parity = IsParity(H);
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x4D: // BIT 1,L
                 Zero = (L & 0x02) == 0;
                 Sign = (L & 0x80) > 0;
                 Parity = IsParity(L);
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x4E: // BIT 1,(HL)
                 Zero = (Memory[(H << 8) | L] & 0x02) == 0;
                 Sign = (Memory[(H << 8) | L] & 0x80) > 0;
                 Parity = IsParity(Memory[(H << 8) | L]);
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
 
             case 0x4F: // BIT 1,A
@@ -4687,126 +4630,126 @@ public class GameBoyCPU
                 Sign = (A & 0x02) > 0;
                 Parity = IsParity((byte)(A & 0x02));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x50: // BIT 2,B
                 Zero = (B & 0x04) == 0;
                 Sign = (B & 0x04) > 0;
                 Parity = IsParity((byte)(B & 0x04));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x51: // BIT 2,C
                 Zero = (C & 0x04) == 0;
                 Sign = (C & 0x04) > 0;
                 Parity = IsParity((byte)(C & 0x04));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x52: // BIT 2,D
                 Zero = (D & 0x04) == 0;
                 Sign = (D & 0x04) > 0;
                 Parity = IsParity((byte)(D & 0x04));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x53: // BIT 2,E
                 Zero = (E & 0x04) == 0;
                 Sign = (E & 0x04) > 0;
                 Parity = IsParity((byte)(E & 0x04));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x54: // BIT 2,H
                 Zero = (H & 0x04) == 0;
                 Sign = (H & 0x04) > 0;
                 Parity = IsParity((byte)(H & 0x04));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x55: // BIT 2,L
                 Zero = (L & 0x04) == 0;
                 Sign = (L & 0x04) > 0;
                 Parity = IsParity((byte)(L & 0x04));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x56: // BIT 2,(HL)
                 Zero = (Memory[(H << 8) | L] & 0x04) == 0;
                 Sign = (Memory[(H << 8) | L] & 0x04) > 0;
                 Parity = IsParity((byte)(Memory[(H << 8) | L] & 0x04));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x57: // BIT 2,A
                 Zero = (A & 0x04) == 0;
                 Sign = (A & 0x04) > 0;
                 Parity = IsParity((byte)(A & 0x04));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x58: // BIT 3,B
                 Zero = (B & 0x08) == 0;
                 Sign = (B & 0x08) > 0;
                 Parity = IsParity((byte)(B & 0x08));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x59: // BIT 3,C
                 Zero = (C & 0x08) == 0;
                 Sign = (C & 0x08) > 0;
                 Parity = IsParity((byte)(C & 0x08));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x5A: // BIT 3,D
                 Zero = (D & 0x08) == 0;
                 Sign = (D & 0x08) > 0;
                 Parity = IsParity((byte)(D & 0x08));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x5B: // BIT 3,E
                 Zero = (E & 0x08) == 0;
                 Sign = (E & 0x08) > 0;
                 Parity = IsParity((byte)(E & 0x08));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x5C: // BIT 3,H
                 Zero = (H & 0x08) == 0;
                 Sign = (H & 0x08) > 0;
                 Parity = IsParity((byte)(H & 0x08));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x5D: // BIT 3,L
                 Zero = (L & 0x08) == 0;
                 Sign = (L & 0x08) > 0;
                 Parity = IsParity((byte)(L & 0x08));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x5E: // BIT 3,(HL)
                 Zero = (Memory[(H << 8) | L] & 0x08) == 0;
                 Sign = (Memory[(H << 8) | L] & 0x08) > 0;
                 Parity = IsParity((byte)(Memory[(H << 8) | L] & 0x08));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x5F: // BIT 3,A
                 Zero = (A & 0x08) == 0;
                 Sign = (A & 0x08) > 0;
                 Parity = IsParity((byte)(A & 0x08));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x60: // BIT 4,B
                 Zero = (B & 0x10) == 0;
                 Sign = (B & 0x10) > 0;
                 Parity = IsParity((byte)(B & 0x10));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
 
 
@@ -4815,70 +4758,70 @@ public class GameBoyCPU
                 Sign = (C & 0x10) > 0;
                 Parity = IsParity((byte)(C & 0x10));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x62: // BIT 4,D
                 Zero = (D & 0x10) == 0;
                 Sign = (D & 0x10) > 0;
                 Parity = IsParity((byte)(D & 0x10));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x63: // BIT 4,E
                 Zero = (E & 0x10) == 0;
                 Sign = (E & 0x10) > 0;
                 Parity = IsParity((byte)(E & 0x10));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x64: // BIT 4,H
                 Zero = (H & 0x10) == 0;
                 Sign = (H & 0x10) > 0;
                 Parity = IsParity((byte)(H & 0x10));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x65: // BIT 4,L
                 Zero = (L & 0x10) == 0;
                 Sign = (L & 0x10) > 0;
                 Parity = IsParity((byte)(L & 0x10));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x66: // BIT 4,(HL)
                 Zero = (Memory[(H << 8) | L] & 0x10) == 0;
                 Sign = (Memory[(H << 8) | L] & 0x10) > 0;
                 Parity = IsParity((byte)(Memory[(H << 8) | L] & 0x10));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x67: // BIT 4,A
                 Zero = (A & 0x10) == 0;
                 Sign = (A & 0x10) > 0;
                 Parity = IsParity((byte)(A & 0x10));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x68: // BIT 5,B
                 Zero = (B & 0x20) == 0;
                 Sign = (B & 0x20) > 0;
                 Parity = IsParity((byte)(B & 0x20));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x69: // BIT 5,C
                 Zero = (C & 0x20) == 0;
                 Sign = (C & 0x20) > 0;
                 Parity = IsParity((byte)(C & 0x20));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x6A: // BIT 5,D
                 Zero = (D & 0x20) == 0;
                 Sign = (D & 0x20) > 0;
                 Parity = IsParity((byte)(D & 0x20));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
 
             case 0x6B: // BIT 5,E
@@ -4886,70 +4829,70 @@ public class GameBoyCPU
                 Sign = (E & 0x20) > 0;
                 Parity = IsParity((byte)(E & 0x20));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x6C: // BIT 5,H
                 Zero = (H & 0x20) == 0;
                 Sign = (H & 0x20) > 0;
                 Parity = IsParity((byte)(H & 0x20));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x6D: // BIT 5,L
                 Zero = (L & 0x20) == 0;
                 Sign = (L & 0x20) > 0;
                 Parity = IsParity((byte)(L & 0x20));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x6E: // BIT 5,(HL)
                 Zero = (Memory[(H << 8) | L] & 0x20) == 0;
                 Sign = (Memory[(H << 8) | L] & 0x20) > 0;
                 Parity = IsParity((byte)(Memory[(H << 8) | L] & 0x20));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x6F: // BIT 5,A
                 Zero = (A & 0x20) == 0;
                 Sign = (A & 0x20) > 0;
                 Parity = IsParity((byte)(A & 0x20));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x70: // BIT 6,B
                 Zero = (B & 0x40) == 0;
                 Sign = (B & 0x40) > 0;
                 Parity = IsParity((byte)(B & 0x40));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x71: // BIT 6,C
                 Zero = (C & 0x40) == 0;
                 Sign = (C & 0x40) > 0;
                 Parity = IsParity((byte)(C & 0x40));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x72: // BIT 6,D
                 Zero = (D & 0x40) == 0;
                 Sign = (D & 0x40) > 0;
                 Parity = IsParity((byte)(D & 0x40));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x73: // BIT 6,E
                 Zero = (E & 0x40) == 0;
                 Sign = (E & 0x40) > 0;
                 Parity = IsParity((byte)(E & 0x40));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x74: // BIT 6,H
                 Zero = (H & 0x40) == 0;
                 Sign = (H & 0x40) > 0;
                 Parity = IsParity((byte)(H & 0x40));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
 
             case 0x75: // BIT 6,L
@@ -4957,520 +4900,520 @@ public class GameBoyCPU
                 Sign = (L & (1 << 6)) > 0;
                 Parity = IsParity((byte)(L & (1 << 6)));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x76: // BIT 6,(HL)
                 Zero = (Memory[(H << 8) | L] & (1 << 6)) == 0;
                 Sign = (Memory[(H << 8) | L] & (1 << 6)) > 0;
                 Parity = IsParity((byte)(Memory[(H << 8) | L] & (1 << 6)));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x77: // BIT 6,A
                 Zero = (A & (1 << 6)) == 0;
                 Sign = (A & (1 << 6)) > 0;
                 Parity = IsParity((byte)(A & (1 << 6)));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x78: // BIT 7,B
                 Zero = (B & (1 << 7)) == 0;
                 Sign = (B & (1 << 7)) > 0;
                 Parity = IsParity((byte)(B & (1 << 7)));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x79: // BIT 7,C
                 Zero = (C & (1 << 7)) == 0;
                 Sign = (C & (1 << 7)) > 0;
                 Parity = IsParity((byte)(C & (1 << 7)));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x7A: // BIT 7,D
                 Zero = (D & (1 << 7)) == 0;
                 Sign = (D & (1 << 7)) > 0;
                 Parity = IsParity((byte)(D & (1 << 7)));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x7B: // BIT 7,E
                 Zero = (E & (1 << 7)) == 0;
                 Sign = (E & (1 << 7)) > 0;
                 Parity = IsParity((byte)(E & (1 << 7)));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x7C: // BIT 7,H
                 Zero = (H & (1 << 7)) == 0;
                 Sign = (H & (1 << 7)) > 0;
                 Parity = IsParity((byte)(H & (1 << 7)));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x7D: // BIT 7,L
                 Zero = (L & (1 << 7)) == 0;
                 Sign = (L & (1 << 7)) > 0;
                 Parity = IsParity((byte)(L & (1 << 7)));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x7E: // BIT 7,(HL)
                 Zero = (Memory[(H << 8) | L] & (1 << 7)) == 0;
                 Sign = (Memory[(H << 8) | L] & (1 << 7)) > 0;
                 Parity = IsParity((byte)(Memory[(H << 8) | L] & (1 << 7)));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x7F: // BIT 7,A
                 Zero = (A & (1 << 7)) == 0;
                 Sign = (A & (1 << 7)) > 0;
                 Parity = IsParity((byte)(A & (1 << 7)));
                 HalfCarry = true;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
 
             case 0x80: // RES 0,B
                 B &= 0xFE;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x81: // RES 0,C
                 C &= 0xFE;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x82: // RES 0,D
                 D &= 0xFE;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x83: // RES 0,E
                 E &= 0xFE;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x84: // RES 0,H
                 H &= 0xFE;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x85: // RES 0,L
                 L &= 0xFE;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x86: // RES 0,(HL)
                 Memory[(H << 8) | L] &= 0xFE;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x87: // RES 0,A
                 A &= 0xFE;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x88: // RES 1,B
                 B &= 0xFD;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x89: // RES 1,C
                 C &= 0xFD;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x8A: // RES 1,D
                 D &= 0xFD;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x8B: // RES 1,E
                 E &= 0xFD;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
 
             case 0x8C: // RES 1,H
                 H &= 0xFE;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x8D: // RES 1,L
                 L &= 0xFE;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x8E: // RES 1,(HL)
                 Memory[(H << 8) | L] &= 0xFE;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x8F: // RES 1,A
                 A &= 0xFE;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x90: // RES 2,B
                 B &= 0xFD;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x91: // RES 2,C
                 C &= 0xFD;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x92: // RES 2,D
                 D &= 0xFD;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x93: // RES 2,E
                 E &= 0xFD;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x94: // RES 2,H
                 H &= 0xFD;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x95: // RES 2,L
                 L &= 0xFD;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x96: // RES 2,(HL)
                 Memory[(H << 8) | L] &= 0xFD;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x97: // RES 2,A
                 A &= 0xFD;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x98: // RES 3,B
                 B &= 0xFB;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x99: // RES 3,C
                 C &= 0xFB;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x9A: // RES 3,D
                 D &= 0xFB;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x9B: // RES 3,E
                 E &= 0xFB;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x9C: // RES 3,H
                 H &= 0xFB;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x9D: // RES 3,L
                 L &= 0xFB;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x9E: // RES 3,(HL)
                 Memory[(H << 8) | L] &= 0xFB;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0x9F: // RES 3,A
                 A &= 0xFB;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xA0: // RES 4,B
                 B &= 0xF7;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xA1: // RES 4,C
                 C &= 0xF7;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xA2: // RES 4,D
                 D &= 0xF7;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xA3: // RES 4,E
                 E &= 0xF7;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
 
             case 0xA4: // RES 4,H
                 H &= 0xEF;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xA5: // RES 4,L
                 L &= 0xEF;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xA6: // RES 4,(HL)
                 Memory[(H << 8) | L] &= 0xEF;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xA7: // RES 4,A
                 A &= 0xEF;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xA8: // RES 5,B
                 B &= 0xDF;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xA9: // RES 5,C
                 C &= 0xDF;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xAA: // RES 5,D
                 D &= 0xDF;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xAB: // RES 5,E
                 E &= 0xDF;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xAC: // RES 5,H
                 H &= 0xDF;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xAD: // RES 5,L
                 L &= 0xDF;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xAE: // RES 5,(HL)
                 Memory[(H << 8) | L] &= 0xDF;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xAF: // RES 5,A
                 A &= 0xDF;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xB0: // RES 6,B
                 B &= 0xBF;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xB1: // RES 6,C
                 C &= 0xBF;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xB2: // RES 6,D
                 D &= 0xBF;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xB3: // RES 6,E
                 E &= 0xBF;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xB4: // RES 6,H
                 H &= 0xBF;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xB5: // RES 6,L
                 L &= 0xBF;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xB6: // RES 6,(HL)
                 Memory[(H << 8) | L] &= 0xBF;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xB7: // RES 6,A
                 A &= 0xBF;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xB8: // RES 7,B
                 B &= 0x7F;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xB9: // RES 7,C
                 C &= 0x7F;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xBA: // RES 7,D
                 D &= 0x7F;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xBB: // RES 7,E
                 E &= 0x7F;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xBC: // RES 7,H
                 H &= 0x7F;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xBD: // RES 7,L
                 L &= 0x7F;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xBE: // RES 7,(HL)
                 Memory[(H << 8) | L] &= 0x7F;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xBF: // RES 7,A
                 A &= 0x7F;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xC0: // SET 0,B
                 B |= 0x01;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xC1: // SET 0,C
                 C |= 0x01;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xC2: // SET 0,D
                 D |= 0x01;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xC3: // SET 0,E
                 E |= 0x01;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xC4: // SET 0,H
                 H |= 0x01;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xC5: // SET 0,L
                 L |= 0x01;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xC6: // SET 0,(HL)
                 Memory[(H << 8) | L] |= 0x01;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xC7: // SET 0,A
                 A |= 0x01;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xC8: // SET 1,B
                 B |= 0x02;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xC9: // SET 1,C
                 C |= 0x02;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xCA: // SET 1,D
                 D |= 0x02;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xCB: // SET 1,E
                 E |= 0x02;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xCC: // SET 1,H
                 H |= 0x02;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xCD: // SET 1,L
                 L |= 0x02;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xCE: // SET 1,(HL)
                 Memory[(H << 8) | L] |= 0x02;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xCF: // SET 1,A
                 A |= 0x02;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xD0: // SET 2,B
                 B |= 0x04;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xD1: // SET 2,C
                 C |= 0x04;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xD2: // SET 2,D
                 D |= 0x04;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xD3: // SET 2,E
                 E |= 0x04;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xD4: // SET 2,H
                 H |= 0x04;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xD5: // SET 2,L
                 L |= 0x04;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xD6: // SET 2,(HL)
                 Memory[(H << 8) | L] |= 0x04;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xD7: // SET 2,A
                 A |= 0x04;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xD8: // SET 3,B
                 B |= 0x08;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xD9: // SET 3,C
                 C |= 0x08;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xDA: // SET 3,D
                 D |= 0x08;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xDB: // SET 3,E
                 E |= 0x08;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xDC: // SET 3,H
                 H |= 0x08;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xDD: // SET 3,L
                 L |= 0x08;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xDE: // SET 3,(HL)
                 Memory[(H << 8) | L] |= 0x08;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xDF: // SET 3,A
                 A |= 0x08;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xE0: // SET 4,B
                 B |= 0x10;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xE1: // SET 4,C
                 C |= 0x10;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xE2: // SET 4,D
                 D |= 0x10;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xE3: // SET 4,E
                 E |= 0x10;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xE4: // SET 4,H
                 H |= 0x10;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xE5: // SET 4,L
                 L |= 0x10;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xE6: // SET 4,(HL)
                 Memory[(H << 8) | L] |= 0x10;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xE7: // SET 4,A
                 A |= 0x10;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xE8: // SET 5,B
                 B |= 0x20;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xE9: // SET 5,C
                 C |= 0x20;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xEA: // SET 5,D
                 D |= 0x20;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xEB: // SET 5,E
                 E |= 0x20;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xEC: // SET 5,H
                 H |= 0x20;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xED: // SET 5,L
                 L |= 0x20;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
 
             case 0xEE: // SET 5,(HL)
@@ -5478,9 +5421,9 @@ public class GameBoyCPU
                 Zero = Memory[(H << 8) | L] == 0;
                 Carry = false;
                 Sign = Memory[(H << 8) | L] > 0x7F;
-                Parity = IsParity((byte)(Memory[(H << 8) | L]));
+                Parity = IsParity(Memory[(H << 8) | L]);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xEF: // SET 5,A
                 A |= 0x20;
@@ -5489,7 +5432,7 @@ public class GameBoyCPU
                 Sign = A > 0x7F;
                 Parity = IsParity(A);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xF0: // SET 6,B
                 B |= 0x40;
@@ -5498,7 +5441,7 @@ public class GameBoyCPU
                 Sign = B > 0x7F;
                 Parity = IsParity(B);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xF1: // SET 6,C
                 C |= 0x40;
@@ -5507,7 +5450,7 @@ public class GameBoyCPU
                 Sign = C > 0x7F;
                 Parity = IsParity(C);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xF2: // SET 6,D
                 D |= 0x40;
@@ -5516,7 +5459,7 @@ public class GameBoyCPU
                 Sign = D > 0x7F;
                 Parity = IsParity(D);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xF3: // SET 6,E
                 E |= 0x40;
@@ -5525,7 +5468,7 @@ public class GameBoyCPU
                 Sign = E > 0x7F;
                 Parity = IsParity(E);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xF4: // SET 6,H
                 H |= 0x40;
@@ -5534,7 +5477,7 @@ public class GameBoyCPU
                 Sign = H > 0x7F;
                 Parity = IsParity(H);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xF5: // SET 6,L
                 L |= 0x40;
@@ -5543,16 +5486,16 @@ public class GameBoyCPU
                 Sign = L > 0x7F;
                 Parity = IsParity(L);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xF6: // SET 6,(HL)
                 Memory[(H << 8) | L] |= 0x40;
                 Zero = Memory[(H << 8) | L] == 0;
                 Carry = false;
                 Sign = Memory[(H << 8) | L] > 0x7F;
-                Parity = IsParity((byte)(Memory[(H << 8) | L]));
+                Parity = IsParity(Memory[(H << 8) | L]);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xF7: // SET 6,A
                 A |= 0x40;
@@ -5561,7 +5504,7 @@ public class GameBoyCPU
                 Sign = A > 0x7F;
                 Parity = IsParity(A);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xF8: // SET 7,B
                 B |= 0x80;
@@ -5570,7 +5513,7 @@ public class GameBoyCPU
                 Sign = B > 0x7F;
                 Parity = IsParity(B);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xF9: // SET 7,C
                 C |= 0x80;
@@ -5579,7 +5522,7 @@ public class GameBoyCPU
                 Sign = C > 0x7F;
                 Parity = IsParity(C);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xFA: // SET 7,D
                 D |= 0x80;
@@ -5588,7 +5531,7 @@ public class GameBoyCPU
                 Sign = D > 0x7F;
                 Parity = IsParity(D);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xFB: // SET 7,E
                 E |= 0x80;
@@ -5597,7 +5540,7 @@ public class GameBoyCPU
                 Sign = E > 0x7F;
                 Parity = IsParity(E);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xFC: // SET 7,H
                 H |= 0x80;
@@ -5606,7 +5549,7 @@ public class GameBoyCPU
                 Sign = H > 0x7F;
                 Parity = IsParity(H);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xFD: // SET 7,L
                 L |= 0x80;
@@ -5615,16 +5558,16 @@ public class GameBoyCPU
                 Sign = L > 0x7F;
                 Parity = IsParity(L);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xFE: // SET 7,(HL)
                 Memory[(H << 8) | L] |= 0x80;
                 Zero = Memory[(H << 8) | L] == 0;
                 Carry = false;
                 Sign = Memory[(H << 8) | L] > 0x7F;
-                Parity = IsParity((byte)(Memory[(H << 8) | L]));
+                Parity = IsParity(Memory[(H << 8) | L]);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
             case 0xFF: // SET 7,A
                 A |= 0x80;
@@ -5633,513 +5576,339 @@ public class GameBoyCPU
                 Sign = A > 0x7F;
                 Parity = IsParity(A);
                 HalfCarry = false;
-                PC += 2;
+                ProgramCounter += 2;
                 break;
         }
     }
 
 
-    public string DisassembleInstruction(ushort programCounter)
+    public Dictionary<byte, (ushort, Func<GameBoyCpu, string>)> OpcodeData = new()
     {
-        byte opcode = Memory[programCounter];
-
-        switch (opcode)
+        { 0x00, (1, _ => "NOP") },
         {
-            case 0x00: //NOP
-                return $"{programCounter:X4}: NOP";
-            case 0x01: //LD BC, nn
-                return $"{programCounter:X4}: LD BC, {Memory[programCounter + 1]:X2}{Memory[programCounter + 2]:X2}";
-            case 0x02: //LD (BC), A
-                return $"{programCounter:X4}: LD (BC), A";
-            case 0x03: //INC BC
-                return $"{programCounter:X4}: INC BC";
-            case 0x04: //INC B
-                return $"{programCounter:X4}: INC B";
-            case 0x05: //DEC B
-                return $"{programCounter:X4}: DEC B";
-            case 0x06: //LD B, n
-                return $"{programCounter:X4}: LD B, {Memory[programCounter + 1]:X2}";
-            case 0x07: //RLCA
-                return $"{programCounter:X4}: RLCA";
-            case 0x08: //LD (nn), SP
-                return $"{programCounter:X4}: LD ({Memory[programCounter + 1]:X2}{Memory[programCounter + 2]:X2}), SP";
-            case 0x09: //ADD HL, BC
-                return $"{programCounter:X4}: ADD HL, BC";
-            case 0x0A: //LD A, (BC)
-                return $"{programCounter:X4}: LD A, (BC)";
-            case 0x0B: //DEC BC
-                return $"{programCounter:X4}: DEC BC";
-            case 0x0C: //INC C
-                return $"{programCounter:X4}: INC C";
-            case 0x0D: //DEC C
-                return $"{programCounter:X4}: DEC C";
-            case 0x0E: //LD C, n
-                return $"{programCounter:X4}: LD C, {Memory[programCounter + 1]:X2}";
-            case 0x0F: //RRCA
-                return $"{programCounter:X4}: RRCA";
-            case 0x10: //STOP
-                return $"{programCounter:X4}: STOP";
-            case 0x11: //LD DE, nn
-                return $"{programCounter:X4}: LD DE, {Memory[programCounter + 1]:X2}{Memory[programCounter + 2]:X2}";
-            case 0x12: //LD (DE), A
-                return $"{programCounter:X4}: LD (DE), A";
-            case 0x13: //INC DE
-                return $"{programCounter:X4}: INC DE";
-            case 0x14: //INC D
-                return $"{programCounter:X4}: INC D";
-            case 0x15: //DEC D
-                return $"{programCounter:X4}: DEC D";
-            case 0x16: //LD D, n
-                return $"{programCounter:X4}: LD D, {Memory[programCounter + 1]:X2}";
-            case 0x17: //RLA
-                return $"{programCounter:X4}: RLA";
-            case 0x18: //JR n
-                return $"{programCounter:X4}: JR {Memory[programCounter + 1]:X2}";
-            case 0x19: //ADD HL, DE
-                return $"{programCounter:X4}: ADD HL, DE";
-            case 0x1A: //LD A, (DE)
-                return $"{programCounter:X4}: LD A, (DE)";
-            case 0x1B: //DEC DE
-                return $"{programCounter:X4}: DEC DE";
-            case 0x1C: //INC E
-                return $"{programCounter:X4}: INC E";
-            case 0x1D: //DEC E
-                return $"{programCounter:X4}: DEC E";
-            case 0x1E: //LD E, n
-                return $"{programCounter:X4}: LD E, {Memory[programCounter + 1]:X2}";
-            case 0x1F: //RRA
-                return $"{programCounter:X4}: RRA";
-            case 0x20: //JR NZ, n
-                return $"{programCounter:X4}: JR NZ, {Memory[programCounter + 1]:X2}";
-            case 0x21: //LD HL, nn
-                return $"{programCounter:X4}: LD HL, {Memory[programCounter + 1]:X2}{Memory[programCounter + 2]:X2}";
-            case 0x22: //LD (HL+), A
-                return $"{programCounter:X4}: LD (HL+), A";
-            case 0x23: //INC HL
-                return $"{programCounter:X4}: INC HL";
-            case 0x24: //INC H
-                return $"{programCounter:X4}: INC H";
-            case 0x25: //DEC H
-                return $"{programCounter:X4}: DEC H";
-            case 0x26: //LD H, n
-                return $"{programCounter:X4}: LD H, {Memory[programCounter + 1]:X2}";
-            case 0x27: //DAA
-                return $"{programCounter:X4}: DAA";
-            case 0x28: //JR Z, n
-                return $"{programCounter:X4}: JR Z, {Memory[programCounter + 1]:X2}";
-            case 0x29: //ADD HL, HL
-                return $"{programCounter:X4}: ADD HL, HL";
-            case 0x2A: //LD A, (HL+)
-                return $"{programCounter:X4}: LD A, (HL+)";
-            case 0x2B: //DEC HL
-                return $"{programCounter:X4}: DEC HL";
-            case 0x2C: //INC L
-                return $"{programCounter:X4}: INC L";
-            case 0x2D: //DEC L
-                return $"{programCounter:X4}: DEC L";
-            case 0x2E: //LD L, n
-                return $"{programCounter:X4}: LD L, {Memory[programCounter + 1]:X2}";
-            case 0x2F: //CPL
-                return $"{programCounter:X4}: CPL";
-            case 0x30: //JR NC, n
-                return $"{programCounter:X4}: JR NC, {Memory[programCounter + 1]:X2}";
-            case 0x31: //LD SP, nn
-                return $"{programCounter:X4}: LD SP, {Memory[programCounter + 1]:X2}{Memory[programCounter + 2]:X2}";
-            case 0x32: //LD (HL-), A
-                return $"{programCounter:X4}: LD (HL-), A";
-            case 0x33: //INC SP
-                return $"{programCounter:X4}: INC SP";
-            case 0x34: //INC (HL)
-                return $"{programCounter:X4}: INC (HL)";
-            case 0x35: //DEC (HL)
-                return $"{programCounter:X4}: DEC (HL)";
-            case 0x36: //LD (HL), n
-                return $"{programCounter:X4}: LD (HL), {Memory[programCounter + 1]:X2}";
-            case 0x37: //SCF
-                return $"{programCounter:X4}: SCF";
-            case 0x38: //JR C, n
-                return $"{programCounter:X4}: JR C, {Memory[programCounter + 1]:X2}";
-            case 0x39: //ADD HL, SP
-                return $"{programCounter:X4}: ADD HL, SP";
-            case 0x3A: //LD A, (HL-)
-                return $"{programCounter:X4}: LD A, (HL-)";
-            case 0x3B: //DEC SP
-                return $"{programCounter:X4}: DEC SP";
-            case 0x3C: //INC A
-                return $"{programCounter:X4}: INC A";
-            case 0x3D: //DEC A
-                return $"{programCounter:X4}: DEC A";
-            case 0x3E: //LD A, n
-                return $"{programCounter:X4}: LD A, {Memory[programCounter + 1]:X2}";
-            case 0x3F: //CCF
-                return $"{programCounter:X4}: CCF";
-            case 0x40: //LD B, B
-                return $"{programCounter:X4}: LD B, B";
-            case 0x41: //LD B, C
-                return $"{programCounter:X4}: LD B, C";
-            case 0x42: //LD B, D
-                return $"{programCounter:X4}: LD B, D";
-            case 0x43: //LD B, E
-                return $"{programCounter:X4}: LD B, E";
-            case 0x44: //LD B, H
-                return $"{programCounter:X4}: LD B, H";
-            case 0x45: //LD B, L
-                return $"{programCounter:X4}: LD B, L";
-            case 0x46: //LD B, (HL)
-                return $"{programCounter:X4}: LD B, (HL)";
-            case 0x47: //LD B, A
-                return $"{programCounter:X4}: LD B, A";
-            case 0x48: //LD C, B
-                return $"{programCounter:X4}: LD C, B";
-            case 0x49: //LD C, C
-                return $"{programCounter:X4}: LD C, C";
-            case 0x4A: //LD C, D
-                return $"{programCounter:X4}: LD C, D";
-            case 0x4B: //LD C, E
-                return $"{programCounter:X4}: LD C, E";
-            case 0x4C: //LD C, H
-                return $"{programCounter:X4}: LD C, H";
-            case 0x4D: //LD C, L
-                return $"{programCounter:X4}: LD C, L";
-            case 0x4E: //LD C, (HL)
-                return $"{programCounter:X4}: LD C, (HL)";
-            case 0x4F: //LD C, A
-                return $"{programCounter:X4}: LD C, A";
-            case 0x50: //LD D, B
-                return $"{programCounter:X4}: LD D, B";
-            case 0x51: //LD D, C
-                return $"{programCounter:X4}: LD D, C";
-            case 0x52: //LD D, D
-                return $"{programCounter:X4}: LD D, D";
-            case 0x53: //LD D, E
-                return $"{programCounter:X4}: LD D, E";
-            case 0x54: //LD D, H
-                return $"{programCounter:X4}: LD D, H";
-            case 0x55: //LD D, L
-                return $"{programCounter:X4}: LD D, L";
-            case 0x56: //LD D, (HL)
-                return $"{programCounter:X4}: LD D, (HL)";
-            case 0x57: //LD D, A
-                return $"{programCounter:X4}: LD D, A";
-            case 0x58: //LD E, B
-                return $"{programCounter:X4}: LD E, B";
-            case 0x59: //LD E, C
-                return $"{programCounter:X4}: LD E, C";
-            case 0x5A: //LD E, D
-                return $"{programCounter:X4}: LD E, D";
-            case 0x5B: //LD E, E
-                return $"{programCounter:X4}: LD E, E";
-            case 0x5C: //LD E, H
-                return $"{programCounter:X4}: LD E, H";
-            case 0x5D: //LD E, L
-                return $"{programCounter:X4}: LD E, L";
-            case 0x5E: //LD E, (HL)
-                return $"{programCounter:X4}: LD E, (HL)";
-            case 0x5F: //LD E, A
-                return $"{programCounter:X4}: LD E, A";
-            case 0x60: //LD H, B
-                return $"{programCounter:X4}: LD H, B";
-            case 0x61: //LD H, C
-                return $"{programCounter:X4}: LD H, C";
-            case 0x62: //LD H, D
-                return $"{programCounter:X4}: LD H, D";
-            case 0x63: //LD H, E
-                return $"{programCounter:X4}: LD H, E";
-            case 0x64: //LD H, H
-                return $"{programCounter:X4}: LD H, H";
-            case 0x65: //LD H, L
-                return $"{programCounter:X4}: LD H, L";
-            case 0x66: //LD H, (HL)
-                return $"{programCounter:X4}: LD H, (HL)";
-            case 0x67: //LD H, A
-                return $"{programCounter:X4}: LD H, A";
-            case 0x68: //LD L, B
-                return $"{programCounter:X4}: LD L, B";
-            case 0x69: //LD L, C
-                return $"{programCounter:X4}: LD L, C";
-            case 0x6A: //LD L, D
-                return $"{programCounter:X4}: LD L, D";
-            case 0x6B: //LD L, E
-                return $"{programCounter:X4}: LD L, E";
-            case 0x6C: //LD L, H
-                return $"{programCounter:X4}: LD L, H";
-            case 0x6D: //LD L, L
-                return $"{programCounter:X4}: LD L, L";
-            case 0x6E: //LD L, (HL)
-                return $"{programCounter:X4}: LD L, (HL)";
-            case 0x6F: //LD L, A
-                return $"{programCounter:X4}: LD L, A";
-            case 0x70: //LD (HL), B
-                return $"{programCounter:X4}: LD (HL), B";
-            case 0x71: //LD (HL), C
-                return $"{programCounter:X4}: LD (HL), C";
-            case 0x72: //LD (HL), D
-                return $"{programCounter:X4}: LD (HL), D";
-            case 0x73: //LD (HL), E
-                return $"{programCounter:X4}: LD (HL), E";
-            case 0x74: //LD (HL), H
-                return $"{programCounter:X4}: LD (HL), H";
-            case 0x75: //LD (HL), L
-                return $"{programCounter:X4}: LD (HL), L";
-            case 0x76: //HALT
-                return $"{programCounter:X4}: HALT";
-            case 0x77: //LD (HL), A
-                return $"{programCounter:X4}: LD (HL), A";
-            case 0x78: //LD A, B
-                return $"{programCounter:X4}: LD A, B";
-            case 0x79: //LD A, C
-                return $"{programCounter:X4}: LD A, C";
-            case 0x7A: //LD A, D
-                return $"{programCounter:X4}: LD A, D";
-            case 0x7B: //LD A, E
-                return $"{programCounter:X4}: LD A, E";
-            case 0x7C: //LD A, H
-                return $"{programCounter:X4}: LD A, H";
-            case 0x7D: //LD A, L
-                return $"{programCounter:X4}: LD A, L";
-            case 0x7E: //LD A, (HL)
-                return $"{programCounter:X4}: LD A, (HL)";
-            case 0x7F: //LD A, A
-                return $"{programCounter:X4}: LD A, A";
-            case 0x80: //ADD A, B
-                return $"{programCounter:X4}: ADD A, B";
-            case 0x81: //ADD A, C
-                return $"{programCounter:X4}: ADD A, C";
-            case 0x82: //ADD A, D
-                return $"{programCounter:X4}: ADD A, D";
-            case 0x83: //ADD A, E
-                return $"{programCounter:X4}: ADD A, E";
-            case 0x84: //ADD A, H
-                return $"{programCounter:X4}: ADD A, H";
-            case 0x85: //ADD A, L
-                return $"{programCounter:X4}: ADD A, L";
-            case 0x86: //ADD A, (HL)
-                return $"{programCounter:X4}: ADD A, (HL)";
-            case 0x87: //ADD A, A
-                return $"{programCounter:X4}: ADD A, A";
-            case 0x88: //ADC A, B
-                return $"{programCounter:X4}: ADC A, B";
-            case 0x89: //ADC A, C
-                return $"{programCounter:X4}: ADC A, C";
-            case 0x8A: //ADC A, D
-                return $"{programCounter:X4}: ADC A, D";
-            case 0x8B: //ADC A, E
-                return $"{programCounter:X4}: ADC A, E";
-            case 0x8C: //ADC A, H
-                return $"{programCounter:X4}: ADC A, H";
-            case 0x8D: //ADC A, L
-                return $"{programCounter:X4}: ADC A, L";
-            case 0x8E: //ADC A, (HL)
-                return $"{programCounter:X4}: ADC A, (HL)";
-            case 0x8F: //ADC A, A
-                return $"{programCounter:X4}: ADC A, A";
-            case 0x90: //SUB B
-                return $"{programCounter:X4}: SUB B";
-            case 0x91: //SUB C
-                return $"{programCounter:X4}: SUB C";
-            case 0x92: //SUB D
-                return $"{programCounter:X4}: SUB D";
-            case 0x93: //SUB E
-                return $"{programCounter:X4}: SUB E";
-            case 0x94: //SUB H
-                return $"{programCounter:X4}: SUB H";
-            case 0x95: //SUB L
-                return $"{programCounter:X4}: SUB L";
-            case 0x96: //SUB (HL)
-                return $"{programCounter:X4}: SUB (HL)";
-            case 0x97: //SUB A
-                return $"{programCounter:X4}: SUB A";
-            case 0x98: //SBC A, B
-                return $"{programCounter:X4}: SBC A, B";
-            case 0x99: //SBC A, C
-                return $"{programCounter:X4}: SBC A, C";
-            case 0x9A: //SBC A, D
-                return $"{programCounter:X4}: SBC A, D";
-            case 0x9B: //SBC A, E
-                return $"{programCounter:X4}: SBC A, E";
-            case 0x9C: //SBC A, H
-                return $"{programCounter:X4}: SBC A, H";
-            case 0x9D: //SBC A, L
-                return $"{programCounter:X4}: SBC A, L";
-            case 0x9E: //SBC A, (HL)
-                return $"{programCounter:X4}: SBC A, (HL)";
-            case 0x9F: //SBC A, A
-                return $"{programCounter:X4}: SBC A, A";
-            case 0xA0: //AND B
-                return $"{programCounter:X4}: AND B";
-            case 0xA1: //AND C
-                return $"{programCounter:X4}: AND C";
-            case 0xA2: //AND D
-                return $"{programCounter:X4}: AND D";
-            case 0xA3: //AND E
-                return $"{programCounter:X4}: AND E";
-            case 0xA4: //AND H
-                return $"{programCounter:X4}: AND H";
-            case 0xA5: //AND L
-                return $"{programCounter:X4}: AND L";
-            case 0xA6: //AND (HL)
-                return $"{programCounter:X4}: AND (HL)";
-            case 0xA7: //AND A
-                return $"{programCounter:X4}: AND A";
-            case 0xA8: //XOR B
-                return $"{programCounter:X4}: XOR B";
-            case 0xA9: //XOR C
-                return $"{programCounter:X4}: XOR C";
-            case 0xAA: //XOR D
-                return $"{programCounter:X4}: XOR D";
-            case 0xAB: //XOR E
-                return $"{programCounter:X4}: XOR E";
-            case 0xAC: //XOR H
-                return $"{programCounter:X4}: XOR H";
-            case 0xAD: //XOR L
-                return $"{programCounter:X4}: XOR L";
-            case 0xAE: //XOR (HL)
-                return $"{programCounter:X4}: XOR (HL)";
-            case 0xAF: //XOR A
-                return $"{programCounter:X4}: XOR A";
-            case 0xB0: //OR B
-                return $"{programCounter:X4}: OR B";
-            case 0xB1: //OR C
-                return $"{programCounter:X4}: OR C";
-            case 0xB2: //OR D
-                return $"{programCounter:X4}: OR D";
-            case 0xB3: //OR E
-                return $"{programCounter:X4}: OR E";
-            case 0xB4: //OR H
-                return $"{programCounter:X4}: OR H";
-            case 0xB5: //OR L
-                return $"{programCounter:X4}: OR L";
-            case 0xB6: //OR (HL)
-                return $"{programCounter:X4}: OR (HL)";
-            case 0xB7: //OR A
-                return $"{programCounter:X4}: OR A";
-            case 0xB8: //CP B
-                return $"{programCounter:X4}: CP B";
-            case 0xB9: //CP C
-                return $"{programCounter:X4}: CP C";
-            case 0xBA: //CP D
-                return $"{programCounter:X4}: CP D";
-            case 0xBB: //CP E
-                return $"{programCounter:X4}: CP E";
-            case 0xBC: //CP H
-                return $"{programCounter:X4}: CP H";
-            case 0xBD: //CP L
-                return $"{programCounter:X4}: CP L";
-            case 0xBE: //CP (HL)
-                return $"{programCounter:X4}: CP (HL)";
-            case 0xBF: //CP A
-                return $"{programCounter:X4}: CP A";
-            case 0xC0: //RET NZ
-                return $"{programCounter:X4}: RET NZ";
-            case 0xC1: //POP BC
-                return $"{programCounter:X4}: POP BC";
-            case 0xC2: //JP NZ, nn
-                return $"{programCounter:X4}: JP NZ, {Memory[programCounter + 1]:X2}{Memory[programCounter + 2]:X2}";
-            case 0xC3: //JP nn
-                return $"{programCounter:X4}: JP {Memory[programCounter + 1]:X2}{Memory[programCounter + 2]:X2}";
-            case 0xC4: //CALL NZ, nn
-                return $"{programCounter:X4}: CALL NZ, {Memory[programCounter + 1]:X2}{Memory[programCounter + 2]:X2}";
-            case 0xC5: //PUSH BC
-                return $"{programCounter:X4}: PUSH BC";
-            case 0xC6: //ADD A, n
-                return $"{programCounter:X4}: ADD A, {Memory[programCounter + 1]:X2}";
-            case 0xC7: //RST 00H
-                return $"{programCounter:X4}: RST 00H";
-            case 0xC8: //RET Z
-                return $"{programCounter:X4}: RET Z";
-            case 0xC9: //RET
-                return $"{programCounter:X4}: RET";
-            case 0xCA: //JP Z, nn
-                return $"{programCounter:X4}: JP Z, {Memory[programCounter + 1]:X2}{Memory[programCounter + 2]:X2}";
-            case 0xCB: //PREFIX CB
-                return $"{programCounter:X4}: PREFIX CB {Memory[programCounter + 1]:X2}";
+            0x01, (3, cpu => $"LD BC, 0x{cpu.Memory[cpu.ProgramCounter + 2]:X2}{cpu.Memory[cpu.ProgramCounter + 1]:X2}")
+        },
+        { 0x02, (1, _ => "LD (BC), A") },
+        { 0x03, (1, _ => "INC BC") },
+        { 0x04, (1, _ => "INC B") },
+        { 0x05, (1, _ => "DEC B") },
+        { 0x06, (2, cpu => $"LD B, 0x{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        { 0x07, (1, _ => "RLCA") },
+        {
+            0x08,
+            (3, cpu => $"LD (${cpu.Memory[cpu.ProgramCounter + 2]:X2}{cpu.Memory[cpu.ProgramCounter + 1]:X2}), SP")
+        },
+        { 0x09, (1, _ => "ADD HL, BC") },
+        { 0x0A, (1, _ => "LD A, (BC)") },
+        { 0x0B, (1, _ => "DEC BC") },
+        { 0x0C, (1, _ => "INC C") },
+        { 0x0D, (1, _ => "DEC C") },
+        { 0x0E, (2, cpu => $"LD C, 0x{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        { 0x0F, (1, _ => "RRCA") },
+        { 0x10, (2, _ => "STOP 0") },
+        {
+            0x11, (3, cpu => $"LD DE, 0x{cpu.Memory[cpu.ProgramCounter + 2]:X2}{cpu.Memory[cpu.ProgramCounter + 1]:X2}")
+        },
+        { 0x12, (1, _ => "LD (DE), A") },
+        { 0x13, (1, _ => "INC DE") },
+        { 0x14, (1, _ => "INC D") },
+        { 0x15, (1, _ => "DEC D") },
+        { 0x16, (2, cpu => $"LD D, 0x{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        { 0x17, (1, _ => "RLA") },
+        { 0x18, (2, cpu => $"JR 0x{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        { 0x19, (1, _ => "ADD HL, DE") },
+        { 0x1A, (1, _ => "LD A, (DE)") },
+        { 0x1B, (1, _ => "DEC DE") },
+        { 0x1C, (1, _ => "INC E") },
+        { 0x1D, (1, _ => "DEC E") },
+        { 0x1E, (2, cpu => $"LD E, 0x{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        { 0x1F, (1, _ => "RRA") },
+        { 0x20, (2, cpu => $"JR NZ, 0x{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        {
+            0x21, (3, cpu => $"LD HL, 0x{cpu.Memory[cpu.ProgramCounter + 2]:X2}{cpu.Memory[cpu.ProgramCounter + 1]:X2}")
+        },
+        { 0x22, (1, _ => "LD (HL+), A") },
+        { 0x23, (1, _ => "INC HL") },
+        { 0x24, (1, _ => "INC H") },
+        { 0x25, (1, _ => "DEC H") },
+        { 0x26, (2, cpu => $"LD H, 0x{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        { 0x27, (1, _ => "DAA") },
+        { 0x28, (2, cpu => $"JR Z, 0x{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        { 0x29, (1, _ => "ADD HL, HL") },
+        { 0x2A, (1, _ => "LD A, (HL+)") },
+        { 0x2B, (1, _ => "DEC HL") },
+        { 0x2C, (1, _ => "INC L") },
+        { 0x2D, (1, _ => "DEC L") },
+        { 0x2E, (2, cpu => $"LD L, 0x{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        { 0x2F, (1, _ => "CPL") },
+        { 0x30, (2, cpu => $"JR NC, 0x{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        {
+            0x31, (3, cpu => $"LD SP, 0x{cpu.Memory[cpu.ProgramCounter + 2]:X2}{cpu.Memory[cpu.ProgramCounter + 1]:X2}")
+        },
+        { 0x32, (1, _ => "LD (HL-), A") },
+        { 0x33, (1, _ => "INC SP") },
+        { 0x34, (1, _ => "INC (HL)") },
+        { 0x35, (1, _ => "DEC (HL)") },
+        { 0x36, (2, cpu => $"LD (HL), 0x{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        { 0x37, (1, _ => "SCF") },
+        { 0x38, (2, cpu => $"JR C, ${cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        { 0x39, (1, _ => "ADD HL, SP") },
+        { 0x3A, (1, _ => "LD A, (HL-)") },
+        { 0x3B, (1, _ => "DEC SP") },
+        { 0x3C, (1, _ => "INC A") },
+        { 0x3D, (1, _ => "DEC A") },
+        { 0x3E, (2, cpu => $"LD A, 0x{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        { 0x3F, (1, _ => "CCF") },
+        { 0x40, (1, _ => "LD B, B") },
+        { 0x41, (1, _ => "LD B, C") },
+        { 0x42, (1, _ => "LD B, D") },
+        { 0x43, (1, _ => "LD B, E") },
+        { 0x44, (1, _ => "LD B, H") },
+        { 0x45, (1, _ => "LD B, L") },
+        { 0x46, (1, _ => "LD B, (HL)") },
+        { 0x47, (1, _ => "LD B, A") },
+        { 0x48, (1, _ => "LD C, B") },
+        { 0x49, (1, _ => "LD C, C") },
+        { 0x4A, (1, _ => "LD C, D") },
+        { 0x4B, (1, _ => "LD C, E") },
+        { 0x4C, (1, _ => "LD C, H") },
+        { 0x4D, (1, _ => "LD C, L") },
+        { 0x4E, (1, _ => "LD C, (HL)") },
+        { 0x4F, (1, _ => "LD C, A") },
+        { 0x50, (1, _ => "LD D, B") },
+        { 0x51, (1, _ => "LD D, C") },
+        { 0x52, (1, _ => "LD D, D") },
+        { 0x53, (1, _ => "LD D, E") },
+        { 0x54, (1, _ => "LD D, H") },
+        { 0x55, (1, _ => "LD D, L") },
+        { 0x56, (1, _ => "LD D, (HL)") },
+        { 0x57, (1, _ => "LD D, A") },
+        { 0x58, (1, _ => "LD E, B") },
+        { 0x59, (1, _ => "LD E, C") },
+        { 0x5A, (1, _ => "LD E, D") },
+        { 0x5B, (1, _ => "LD E, E") },
+        { 0x5C, (1, _ => "LD E, H") },
+        { 0x5D, (1, _ => "LD E, L") },
+        { 0x5E, (1, _ => "LD E, (HL)") },
+        { 0x5F, (1, _ => "LD E, A") },
+        { 0x60, (1, _ => "LD H, B") },
+        { 0x61, (1, _ => "LD H, C") },
+        { 0x62, (1, _ => "LD H, D") },
+        { 0x63, (1, _ => "LD H, E") },
+        { 0x64, (1, _ => "LD H, H") },
+        { 0x65, (1, _ => "LD H, L") },
+        { 0x66, (1, _ => "LD H, (HL)") },
+        { 0x67, (1, _ => "LD H, A") },
+        { 0x68, (1, _ => "LD L, B") },
+        { 0x69, (1, _ => "LD L, C") },
+        { 0x6A, (1, _ => "LD L, D") },
+        { 0x6B, (1, _ => "LD L, E") },
+        { 0x6C, (1, _ => "LD L, H") },
+        { 0x6D, (1, _ => "LD L, L") },
+        { 0x6E, (1, _ => "LD L, (HL)") },
+        { 0x6F, (1, _ => "LD L, A") },
+        { 0x70, (1, _ => "LD (HL), B") },
+        { 0x71, (1, _ => "LD (HL), C") },
+        { 0x72, (1, _ => "LD (HL), D") },
+        { 0x73, (1, _ => "LD (HL), E") },
+        { 0x74, (1, _ => "LD (HL), H") },
+        { 0x75, (1, _ => "LD (HL), L") },
+        { 0x76, (1, _ => "HALT") },
+        { 0x77, (1, _ => "LD (HL), A") },
+        { 0x78, (1, _ => "LD A, B") },
+        { 0x79, (1, _ => "LD A, C") },
+        { 0x7A, (1, _ => "LD A, D") },
+        { 0x7B, (1, _ => "LD A, E") },
+        { 0x7C, (1, _ => "LD A, H") },
+        { 0x7D, (1, _ => "LD A, L") },
+        {
+            0x7E, (1, cpu => $"LD A, (${cpu.Memory[cpu.ProgramCounter + 2]:X2}{cpu.Memory[cpu.ProgramCounter + 1]:X2})")
+        },
+        { 0x7F, (1, _ => "LD A, A") },
+        { 0x80, (1, _ => "ADD A, B") },
+        { 0x81, (1, _ => "ADD A, C") },
+        { 0x82, (1, _ => "ADD A, D") },
+        { 0x83, (1, _ => "ADD A, E") },
+        { 0x84, (1, _ => "ADD A, H") },
+        { 0x85, (1, _ => "ADD A, L") },
+        {
+            0x86,
+            (1, cpu => $"ADD A, (${cpu.Memory[cpu.ProgramCounter + 2]:X2}{cpu.Memory[cpu.ProgramCounter + 1]:X2})")
+        },
+        { 0x87, (1, _ => "ADD A, A") },
+        { 0x88, (1, _ => "ADC A, B") },
+        { 0x89, (1, _ => "ADC A, C") },
+        { 0x8A, (1, _ => "ADC A, D") },
+        { 0x8B, (1, _ => "ADC A, E") },
+        { 0x8C, (1, _ => "ADC A, H") },
+        { 0x8D, (1, _ => "ADC A, L") },
+        {
+            0x8E,
+            (1, cpu => $"ADC A, (${cpu.Memory[cpu.ProgramCounter + 2]:X2}{cpu.Memory[cpu.ProgramCounter + 1]:X2})")
+        },
+        { 0x8F, (1, _ => "ADC A, A") },
+        { 0x90, (1, _ => "SUB B") },
+        { 0x91, (1, _ => "SUB C") },
+        { 0x92, (1, _ => "SUB D") },
+        { 0x93, (1, _ => "SUB E") },
+        { 0x94, (1, _ => "SUB H") },
+        { 0x95, (1, _ => "SUB L") },
+        { 0x96, (1, cpu => $"SUB (${cpu.Memory[cpu.ProgramCounter + 2]:X2}{cpu.Memory[cpu.ProgramCounter + 1]:X2})") },
+        { 0x97, (1, _ => "SUB A") },
+        { 0x98, (1, _ => "SBC A, B") },
+        { 0x99, (1, _ => "SBC A, C") },
+        { 0x9A, (1, _ => "SBC A, D") },
+        { 0x9B, (1, _ => "SBC A, E") },
+        { 0x9C, (1, _ => "SBC A, H") },
+        { 0x9D, (1, _ => "SBC A, L") },
+        {
+            0x9E,
+            (1, cpu => $"SBC A, (${cpu.Memory[cpu.ProgramCounter + 2]:X2}{cpu.Memory[cpu.ProgramCounter + 1]:X2})")
+        },
+        { 0x9F, (1, _ => "SBC A, A") },
+        { 0xA0, (1, _ => "AND B") },
+        { 0xA1, (1, _ => "AND C") },
+        { 0xA2, (1, _ => "AND D") },
+        { 0xA3, (1, _ => "AND E") },
+        { 0xA4, (1, _ => "AND H") },
+        { 0xA5, (1, _ => "AND L") },
+        { 0xA6, (1, cpu => $"AND (${cpu.Memory[cpu.ProgramCounter + 2]:X2}{cpu.Memory[cpu.ProgramCounter + 1]:X2})") },
+        { 0xA7, (1, _ => "AND A") },
+        { 0xA8, (1, _ => "XOR B") },
+        { 0xA9, (1, _ => "XOR C") },
+        { 0xAA, (1, _ => "XOR D") },
+        { 0xAB, (1, _ => "XOR E") },
+        { 0xAC, (1, _ => "XOR H") },
+        { 0xAD, (1, _ => "XOR L") },
+        { 0xAE, (1, cpu => $"XOR (${cpu.Memory[cpu.ProgramCounter + 2]:X2}{cpu.Memory[cpu.ProgramCounter + 1]:X2})") },
+        { 0xAF, (1, _ => "XOR A") },
+        { 0xB0, (1, _ => "OR B") },
+        { 0xB1, (1, _ => "OR C") },
+        { 0xB2, (1, _ => "OR D") },
+        { 0xB3, (1, _ => "OR E") },
+        { 0xB4, (1, _ => "OR H") },
 
-            case 0xCC:
-                return $"{programCounter:X4}: RST 0x08";
-            case 0xCD:
-                return $"{programCounter:X4}: CALL 0x{Memory[programCounter + 1]:X2}{Memory[programCounter + 2]:X2}";
-            case 0xCE:
-                return $"{programCounter:X4}: ADC A, 0x{Memory[programCounter + 1]:X2}";
-            case 0xCF:
-                return $"{programCounter:X4}: RST 0x08";
-            case 0xD0:
-                return $"{programCounter:X4}: RET NC";
-            case 0xD1:
-                return $"{programCounter:X4}: POP DE";
-            case 0xD2:
-                return $"{programCounter:X4}: JP NC, 0x{Memory[programCounter + 1]:X2}{Memory[programCounter + 2]:X2}";
+        { 0xB5, (1, _ => "OR L") },
+        { 0xB6, (1, _ => "OR (HL)") },
+        { 0xB7, (1, _ => "OR A") },
+        { 0xB8, (1, _ => "CP B") },
+        { 0xB9, (1, _ => "CP C") },
+        { 0xBA, (1, _ => "CP D") },
+        { 0xBB, (1, _ => "CP E") },
+        { 0xBC, (1, _ => "CP H") },
+        { 0xBD, (1, _ => "CP L") },
+        { 0xBE, (1, _ => "CP (HL)") },
+        { 0xBF, (1, _ => "CP A") },
+        { 0xC0, (1, _ => "RET NZ") },
+        { 0xC1, (1, _ => "POP BC") },
+        {
+            0xC2, (3, cpu => $"JP NZ, 0x{cpu.Memory[cpu.ProgramCounter + 2]:X2}{cpu.Memory[cpu.ProgramCounter + 1]:X2}")
+        },
+        { 0xC3, (3, cpu => $"JP 0x{cpu.Memory[cpu.ProgramCounter + 2]:X2}{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        {
+            0xC4,
+            (3, cpu => $"CALL NZ, 0x{cpu.Memory[cpu.ProgramCounter + 2]:X2}{cpu.Memory[cpu.ProgramCounter + 1]:X2}")
+        },
+        { 0xC5, (1, _ => "PUSH BC") },
+        { 0xC6, (2, cpu => $"ADD A, 0x{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        { 0xC7, (1, _ => "RST 00h") },
+        { 0xC8, (1, _ => "RET Z") },
+        { 0xC9, (1, _ => "RET") },
+        { 0xCA, (3, cpu => $"JP Z, 0x{cpu.Memory[cpu.ProgramCounter + 2]:X2}{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        { 0xCB, (1, _ => "PREFIX CB") },
+        {
+            0xCC,
+            (3, cpu => $"CALL Z, 0x{cpu.Memory[cpu.ProgramCounter + 2]:X2}{cpu.Memory[cpu.ProgramCounter + 1]:X2}")
+        },
+        { 0xCD, (3, cpu => $"CALL 0x{cpu.Memory[cpu.ProgramCounter + 2]:X2}{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        { 0xCE, (2, cpu => $"ADC A, 0x{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        { 0xCF, (1, _ => "RST 08h") },
+        { 0xD0, (1, _ => "RET NC") },
+        { 0xD1, (1, _ => "POP DE") },
+        {
+            0xD2, (3, cpu => $"JP NC, 0x{cpu.Memory[cpu.ProgramCounter + 2]:X2}{cpu.Memory[cpu.ProgramCounter + 1]:X2}")
+        },
+        {
+            0xD4,
+            (3, cpu => $"CALL NC, 0x{cpu.Memory[cpu.ProgramCounter + 2]:X2}{cpu.Memory[cpu.ProgramCounter + 1]:X2}")
+        },
+        { 0xD5, (1, _ => "PUSH DE") },
+        { 0xD6, (2, cpu => $"SUB 0x{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        { 0xD7, (1, _ => "RST 10h") },
+        { 0xD8, (1, _ => "RET C") },
+        { 0xD9, (1, _ => "RETI") },
+        { 0xDA, (3, cpu => $"JP C, 0x{cpu.Memory[cpu.ProgramCounter + 2]:X2}{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        {
+            0xDC,
+            (3, cpu => $"CALL C, 0x{cpu.Memory[cpu.ProgramCounter + 2]:X2}{cpu.Memory[cpu.ProgramCounter + 1]:X2}")
+        },
+        { 0xDE, (2, cpu => $"SBC A, 0x{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        { 0xDF, (1, _ => "RST 18h") },
+        { 0xE0, (2, cpu => $"LDH (0x{cpu.Memory[cpu.ProgramCounter + 1]:X2}), A") },
+        { 0xE1, (1, _ => "POP HL") },
+        { 0xE2, (2, _ => "LD (C), A") },
+        { 0xE5, (1, _ => "PUSH HL") },
+        { 0xE6, (2, cpu => $"AND 0x{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        { 0xE7, (1, _ => "RST 20h") },
+        { 0xE8, (2, cpu => $"ADD SP, 0x{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        { 0xE9, (1, _ => "JP (HL)") },
+        {
+            0xEA,
+            (3, cpu => $"LD (0x{cpu.Memory[cpu.ProgramCounter + 2]:X2}{cpu.Memory[cpu.ProgramCounter + 1]:X2}), A")
+        },
+        { 0xEE, (2, cpu => $"XOR 0x{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        { 0xEF, (1, _ => "RST 28h") },
+        { 0xF0, (2, cpu => $"LDH A, (0x{cpu.Memory[cpu.ProgramCounter + 1]:X2})") },
+        { 0xF1, (1, _ => "POP AF") },
+        { 0xF2, (2, _ => "LD A, (C)") },
+        { 0xF3, (1, _ => "DI") },
+        { 0xF5, (1, _ => "PUSH AF") },
+        { 0xF6, (2, cpu => $"OR 0x{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        { 0xF7, (1, _ => "RST 30h") },
+        { 0xF8, (2, cpu => $"LD HL, SP+0x{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        { 0xF9, (1, _ => "LD SP, HL") },
+        {
+            0xFA,
+            (3, cpu => $"LD A, (0x{cpu.Memory[cpu.ProgramCounter + 2]:X2}{cpu.Memory[cpu.ProgramCounter + 1]:X2})")
+        },
+        { 0xFB, (1, _ => "EI") },
+        { 0xFE, (2, cpu => $"CP 0x{cpu.Memory[cpu.ProgramCounter + 1]:X2}") },
+        { 0xFF, (1, _ => "RST 38h") }
+    };
 
-            case 0xD4:
-                return
-                    $"{programCounter:X4}: CALL NC, 0x{Memory[programCounter + 1]:X2}{Memory[programCounter + 2]:X2}";
-            case 0xD5:
-                return $"{programCounter:X4}: PUSH DE";
-            case 0xD6:
-                return $"{programCounter:X4}: SUB 0x{Memory[programCounter + 1]:X2}";
-            case 0xD7:
-                return $"{programCounter:X4}: RST 0x10";
-            case 0xD8:
-                return $"{programCounter:X4}: RET C";
-            case 0xD9:
-                return $"{programCounter:X4}: EXX";
-            case 0xDA:
-                return $"{programCounter:X4}: JP C, 0x{Memory[programCounter + 1]:X2}{Memory[programCounter + 2]:X2}";
-            case 0xDC:
-                return $"{programCounter:X4}: CALL C, 0x{Memory[programCounter + 1]:X2}{Memory[programCounter + 2]:X2}";
-            case 0xDE:
-                return $"{programCounter:X4}: SBC A, 0x{Memory[programCounter + 1]:X2}";
-            case 0xDF:
-                return $"{programCounter:X4}: RST 0x18";
-            case 0xE0:
-                return $"{programCounter:X4}: RET PO";
-            case 0xE1:
-                return $"{programCounter:X4}: POP HL";
-            case 0xE2:
-                return $"{programCounter:X4}: JP PO, 0x{Memory[programCounter + 1]:X2}{Memory[programCounter + 2]:X2}";
-            case 0xE5:
-                return $"{programCounter:X4}: PUSH HL";
-            case 0xE6:
-                return $"{programCounter:X4}: AND 0x{Memory[programCounter + 1]:X2}";
-            case 0xE7:
-                return $"{programCounter:X4}: RST 0x20";
-            case 0xE8:
-                return $"{programCounter:X4}: RET PE";
-            case 0xE9:
-                return $"{programCounter:X4}: JP (HL)";
-            case 0xEA:
-                return $"{programCounter:X4}: JP PE, 0x{Memory[programCounter + 1]:X2}{Memory[programCounter + 2]:X2}";
-            case 0xEE:
-                return $"{programCounter:X4}: XOR 0x{Memory[programCounter + 1]:X2}";
-            case 0xEF:
-                return $"{programCounter:X4}: RST 0x28";
-            case 0xF0:
-                return $"{programCounter:X4}: RET P";
-            case 0xF1:
-                return $"{programCounter:X4}: POP AF";
-            case 0xF2:
-                return $"{programCounter:X4}: JP P, 0x{Memory[programCounter + 1]:X2}{Memory[programCounter + 2]:X2}";
-            case 0xF3:
-                return $"{programCounter:X4}: DI";
-            case 0xF5:
-                return $"{programCounter:X4}: PUSH AF";
-            case 0xF6:
-                return $"{programCounter:X4}: OR 0x{Memory[programCounter + 1]:X2}";
-            case 0xF7:
-                return $"{programCounter:X4}: RST 0x30";
-            case 0xF8:
-                return $"{programCounter:X4}: RET M";
-            case 0xF9:
-                return $"{programCounter:X4}: LD SP, HL";
-            case 0xFA:
-                return $"{programCounter:X4}: JP M, 0x{Memory[programCounter + 1]:X2}{Memory[programCounter + 2]:X2}";
-            case 0xFB:
-                return $"{programCounter:X4}: EI";
-            case 0xFE:
-                return $"{programCounter:X4}: CP 0x{Memory[programCounter + 1]:X2}";
-            case 0xFF:
-                return $"{programCounter:X4}: RST 0x38";
-            default:
-                return $"{programCounter:X4}: Unknown opcode 0x{opcode:X2}";
-        }
-    }
+    public string[] PrefixCBOpNames = 
+    {
+        "RLC B", "RLC C", "RLC D", "RLC E", "RLC H", "RLC L", "RLC (HL)", "RLC A", "RRC B", "RRC C", "RRC D", "RRC E",
+        "RRC H", "RRC L", "RRC (HL)", "RRC A", "RL B", "RL C", "RL D", "RL E", "RL H", "RL L", "RL (HL)", "RL A",
+        "RR B",
+        "RR C", "RR D", "RR E", "RR H", "RR L", "RR (HL)", "RR A", "SLA B", "SLA C", "SLA D", "SLA E", "SLA H", "SLA L",
+        "SLA (HL)", "SLA A", "SRA B", "SRA C", "SRA D", "SRA E", "SRA H", "SRA L", "SRA (HL)", "SRA A", "SWAP B",
+        "SWAP C",
+        "SWAP D", "SWAP E", "SWAP H", "SWAP L", "SWAP (HL)", "SWAP A", "SRL B", "SRL C", "SRL D", "SRL E", "SRL H",
+        "SRL L",
+        "SRL (HL)", "SRL A", "BIT 0,B", "BIT 0,C", "BIT 0,D", "BIT 0,E", "BIT 0,H", "BIT 0,L", "BIT 0,(HL)", "BIT 0,A",
+        "BIT 1,B", "BIT 1,C", "BIT 1,D", "BIT 1,E", "BIT 1,H", "BIT 1,L", "BIT 1,(HL)", "BIT 1,A", "BIT 2,B", "BIT 2,C",
+        "BIT 2,D", "BIT 2,E", "BIT 2,H", "BIT 2,L", "BIT 2,(HL)", "BIT 2,A", "BIT 3,B", "BIT 3,C", "BIT 3,D", "BIT 3,E",
+        "BIT 3,H", "BIT 3,L", "BIT 3,(HL)", "BIT 3,A", "BIT 4,B", "BIT 4,C", "BIT 4,D", "BIT 4,E", "BIT 4,H", "BIT 4,L",
+        "BIT 4,(HL)", "BIT 4,A", "BIT 5,B", "BIT 5,C", "BIT 5,D", "BIT 5,E", "BIT 5,H", "BIT 5,L", "BIT 5,(HL)",
+        "BIT 5,A",
+        "BIT 6,B", "BIT 6,C", "BIT 6,D", "BIT 6,E", "BIT 6,H", "BIT 6,L", "BIT 6,(HL)", "BIT 6,A", "BIT 7,B", "BIT 7,C",
+        "BIT 7,D", "BIT 7,E", "BIT 7,H", "BIT 7,L", "BIT 7,(HL)", "BIT 7,A", "RES 0,B", "RES 0,C", "RES 0,D", "RES 0,E",
+        "RES 0,H", "RES 0,L", "RES 0,(HL)", "RES 0,A", "RES 1,B", "RES 1,C", "RES 1,D", "RES 1,E", "RES 1,H", "RES 1,L",
+        "RES 1,(HL)", "RES 1,A", "RES 2,B", "RES 2,C", "RES 2,D", "RES 2,E", "RES 2,H", "RES 2,L", "RES 2,(HL)",
+        "RES 2,A",
+        "RES 3,B", "RES 3,C", "RES 3,D", "RES 3,E", "RES 3,H", "RES 3,L", "RES 3,(HL)", "RES 3,A", "RES 4,B", "RES 4,C",
+        "RES 4,D", "RES 4,E", "RES 4,H", "RES 4,L", "RES 4,(HL)", "RES 4,A", "RES 5,B", "RES 5,C", "RES 5,D", "RES 5,E",
+        "RES 5,H", "RES 5,L", "RES 5,(HL)", "RES 5,A", "RES 6,B", "RES 6,C", "RES 6,D", "RES 6,E", "RES 6,H", "RES 6,L",
+        "RES 6,(HL)", "RES 6,A", "RES 7,B", "RES 7,C", "RES 7,D", "RES 7,E", "RES 7,H", "RES 7,L", "RES 7,(HL)",
+        "RES 7,A",
+        "SET 0,B", "SET 0,C", "SET 0,D", "SET 0,E", "SET 0,H", "SET 0,L", "SET 0,(HL)", "SET 0,A", "SET 1,B", "SET 1,C",
+        "SET 1,D", "SET 1,E", "SET 1,H", "SET 1,L", "SET 1,(HL)", "SET 1,A", "SET 2,B", "SET 2,C", "SET 2,D", "SET 2,E",
+        "SET 2,H", "SET 2,L", "SET 2,(HL)", "SET 2,A", "SET 3,B", "SET 3,C", "SET 3,D", "SET 3,E", "SET 3,H", "SET 3,L",
+        "SET 3,(HL)", "SET 3,A", "SET 4,B", "SET 4,C", "SET 4,D", "SET 4,E", "SET 4,H", "SET 4,L", "SET 4,(HL)",
+        "SET 4,A",
+        "SET 5,B", "SET 5,C", "SET 5,D", "SET 5,E", "SET 5,H", "SET 5,L", "SET 5,(HL)", "SET 5,A", "SET 6,B", "SET 6,C",
+        "SET 6,D", "SET 6,E", "SET 6,H", "SET 6,L", "SET 6,(HL)", "SET 6,A", "SET 7,B", "SET 7,C", "SET 7,D", "SET 7,E",
+        "SET 7,H", "SET 7,L", "SET 7,(HL)", "SET 7,A"
+    };
 }
